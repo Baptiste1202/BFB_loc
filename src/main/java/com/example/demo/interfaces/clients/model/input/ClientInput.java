@@ -1,5 +1,6 @@
 package com.example.demo.interfaces.clients.model.input;
 
+import com.example.demo.interfaces.clients.model.common.model.input.AbstractInput;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -18,13 +19,4 @@ public class ClientInput extends AbstractInput {
     private String lastname;
     private String firstname;
     private String genre;
-
-    public static Client convert(final ClientInput input) {
-        return Client.builder()
-                .identifier(UUID.randomUUID())
-                .lastname(input.getLastname())
-                .firstname(input.getFirstname())
-                .genre(GenreEnum.fromOrDefault(input.getGenre()))
-                .build();
-    }
 }
