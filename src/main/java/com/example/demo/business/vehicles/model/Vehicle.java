@@ -1,6 +1,8 @@
-package com.example.demo.business.clients.vehicles.model;
+package com.example.demo.business.vehicles.model;
 
 import java.util.Date;
+
+import com.example.demo.business.common.VehicleStateEnum;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -42,7 +44,6 @@ public class Vehicle {
 
     /**
      * Etat du véhicule
-     * TODO : Enum VehicleState
      */
-    private String etat;
+    private VehicleStateEnum etat;
 }

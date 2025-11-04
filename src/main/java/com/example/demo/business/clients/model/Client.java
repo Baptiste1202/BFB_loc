@@ -1,6 +1,10 @@
 package com.example.demo.business.clients.model;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+
+import com.example.demo.business.vehicles.model.Vehicle;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -34,4 +38,9 @@ public class Client {
      * Adresse du client
      */
     private String address;
+
+    /**
+     * Collection des véhicules associés au client
+     */
+    private final Collection<Vehicle> vehicles = Collections.emptySet();
 }
