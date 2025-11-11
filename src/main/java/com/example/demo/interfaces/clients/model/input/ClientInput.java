@@ -18,5 +18,7 @@ public class ClientInput extends AbstractInput {
     private static final long serialVersionUID = -6256916847598118362L;
     private String lastname;
     private String firstname;
-    private String genre;
+    private String birthday;
+    private String licenseNumber;
+    private String address;
 }
