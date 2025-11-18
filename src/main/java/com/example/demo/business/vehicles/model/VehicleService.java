@@ -8,10 +8,13 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import com.example.demo.business.clients.model.Client;
-import com.example.demo.utils.CollectionImtUtils;
+import com.example.demo.business.vehicles.model.Vehicle;
+import com.example.demo.infrastructures.bdd.clients.ClientBddService;
 
 public class VehicleService {
-    
+
+    private final ClientBddService service;
+
     /**
      * Récupère tous les comptes associés à un client donné.
      *
@@ -59,7 +62,7 @@ public class VehicleService {
      * @param updatedCompte Compte mis à jour
      * @throws NotFoundException si le client n'existe pas
      */
-    public void update(final UUID clientIdentifier, final Compte updatedCompte) {
+    public void update(final UUID clientIdentifier, final Vehicle updatedCompte) {
         final Client client = this.service.get(clientIdentifier).orElseThrow(() -> new NotFoundException(String.format("Le client %s n'existe pas", clientIdentifier)));
         this.service.save(
                 client.toBuilder().comptes(CollectionImtUtils.append(
