@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import com.example.demo.business.clients.model.Client;
+import com.example.demo.infrastructures.bdd.clients.ClientsBddService;
 
 public class ClientsService {
 
@@ -21,7 +22,7 @@ public class ClientsService {
      * @return une collection de tous les clients, ou une collection vide si aucun client n'existe
      */
     public Collection<Client> getAll() {
-       // return Objects.requireNonNullElse(this.service.getAll(), Collections.emptySet());
+       return Objects.requireNonNullElse(this.service.getAll(), Collections.emptySet());
     }
 
     /**

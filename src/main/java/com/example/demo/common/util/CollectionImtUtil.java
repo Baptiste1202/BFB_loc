@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public final class CollectionmtUtils {
+public final class CollectionImtUtil {
 
      /**
      * Ajoute un élément à une collection et retourne une nouvelle collection.

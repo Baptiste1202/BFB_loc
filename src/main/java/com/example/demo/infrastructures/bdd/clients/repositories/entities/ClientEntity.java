@@ -1,13 +1,15 @@
 package com.example.demo.infrastructures.bdd.clients.repositories.entities;
 
+import java.util.Collection;
+import java.util.Date;
+
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.util.Collection;
 
 @Data
 @Builder
@@ -19,7 +21,9 @@ public class ClientEntity {
     @Id private String identifier;
     private String lastname;
     private String firstname;
-    private String genre;
-    private Collection<CompteEntity> comptes;
+    private Date date_of_birth;
+    private String num_permis;
+    private String address;
+    private Collection<VehicleEntity> vehicles;
 }
 

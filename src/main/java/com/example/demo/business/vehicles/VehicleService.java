@@ -1,4 +1,4 @@
-package com.example.demo.business.vehicles.model;
+package com.example.demo.business.vehicles;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -9,11 +9,17 @@ import java.util.stream.Collectors;
 
 import com.example.demo.business.clients.model.Client;
 import com.example.demo.business.vehicles.model.Vehicle;
-import com.example.demo.infrastructures.bdd.clients.ClientBddService;
+import com.example.demo.common.util.CollectionImtUtil;
+import com.example.demo.infrastructures.bdd.clients.ClientsBddService;
+import com.example.demo.interfaces.common.exception.NotFoundException;
 
 public class VehicleService {
 
-    private final ClientBddService service;
+    private final ClientsBddService service;
+
+    public VehicleService(ClientsBddService service) {
+        this.service = service;
+    }
 
     /**
      * Récupère tous les comptes associés à un client donné.
@@ -52,7 +58,7 @@ public class VehicleService {
     public Vehicle create(final UUID clientIdentifier, final Vehicle newVehicle) {
         final Client client = this.service.get(clientIdentifier).orElseThrow(() -> new NotFoundException(String.format("Le client %s n'existe pas", clientIdentifier)));
         this.service.save(client.toBuilder().vehicles(CollectionImtUtil.append(client.getVehicles(), newVehicle)).build());
-        return newCompte;
+        return newVehicle;
     }
 
     /**
@@ -62,18 +68,27 @@ public class VehicleService {
      * @param updatedCompte Compte mis à jour
      * @throws NotFoundException si le client n'existe pas
      */
-    public void update(final UUID clientIdentifier, final Vehicle updatedCompte) {
+    public void update(final UUID clientIdentifier, final Vehicle updateVehicle) {
         final Client client = this.service.get(clientIdentifier).orElseThrow(() -> new NotFoundException(String.format("Le client %s n'existe pas", clientIdentifier)));
         this.service.save(
-                client.toBuilder().comptes(CollectionImtUtils.append(
-                        Objects.requireNonNullElse(client.getComptes(), Collections.<Compte>emptySet())
+                client.toBuilder().vehicles(CollectionImtUtil.append(
+                        Objects.requireNonNullElse(client.getVehicles(), Collections.<Vehicle>emptySet())
                                 .stream()
-                                .filter(compte -> !Objects.equals(compte.getIdentifier(), updatedCompte.getIdentifier()))
+                                .filter(compte -> !Objects.equals(compte.getIdentifier(), updateVehicle.getIdentifier()))
                                 .collect(Collectors.toSet()),
-                        updatedCompte
+                        updateVehicle
                 )).build()
         );
-        this.mouvementPublisher.accept(clientIdentifier, updatedCompte);
+    }
+
+    public void delete(final UUID clientIdentifier, final UUID identifier) {
+        final Client client = this.service.get(clientIdentifier).orElseThrow(() -> new NotFoundException(String.format("Le client %s n'existe pas", clientIdentifier)));
+        this.service.save(client.toBuilder().vehicles(
+                Objects.requireNonNullElse(client.getVehicles(), Collections.<Vehicle>emptySet())
+                        .stream()
+                        .filter(compte -> !Objects.equals(compte.getIdentifier(), identifier))
+                        .collect(Collectors.toSet())
+        ).build());
     }
 
 }

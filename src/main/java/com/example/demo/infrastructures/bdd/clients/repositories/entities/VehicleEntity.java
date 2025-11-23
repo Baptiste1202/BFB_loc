@@ -1,5 +1,7 @@
 package com.example.demo.infrastructures.bdd.clients.repositories.entities;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,11 +11,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CompteEntity {
+public class VehicleEntity {
 
     private String identifier;
-    private String name;
-    private String type;
-    private Double solde;
+    private String brand;
+    private String model;
+    private String motorisation;
+    private String color;
+    private String immatriculation;
+    private Date acquisition_date;
+    private String etat;
 }
 

@@ -1,16 +1,26 @@
 package com.example.demo.business.vehicles.model;
 
 import java.util.Date;
+import java.util.UUID;
 
 import com.example.demo.business.common.VehicleStateEnum;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
-
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class Vehicle {
+
+    private final UUID identifier;
     
     /**
      * Marque du véhicule

@@ -3,16 +3,26 @@ package com.example.demo.business.clients.model;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.UUID;
 
 import com.example.demo.business.vehicles.model.Vehicle;
 
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.ToString;
 
 @Getter
-@Setter
-
+@Builder(toBuilder = true)
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
 public class Client {
+
+    @NotNull(message = "L'identifiant ne peut pas être nul")
+    private final UUID identifier;
 
     /**
      * Nom de famille du client
@@ -42,5 +52,7 @@ public class Client {
     /**
      * Collection des véhicules associés au client
      */
+    @Builder.Default
     private final Collection<Vehicle> vehicles = Collections.emptySet();
+    
 }

@@ -1,10 +1,19 @@
 package com.example.demo.infrastructures.bdd.clients;
 
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
+
+import com.example.demo.business.clients.model.Client;
+import com.example.demo.infrastructures.bdd.clients.repositories.ClientRepository;
+import com.example.demo.infrastructures.bdd.clients.repositories.entities.ClientEntity;
+import com.example.demo.infrastructures.bdd.clients.repositories.mappers.ClientBddMapper;
 
 import lombok.AllArgsConstructor;
 
