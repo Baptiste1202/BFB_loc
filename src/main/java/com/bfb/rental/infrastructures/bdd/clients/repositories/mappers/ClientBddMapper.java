@@ -1,53 +1,62 @@
 package com.bfb.rental.infrastructures.bdd.clients.repositories.mappers;
 
-import java.util.Collections;
-import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.bfb.rental.business.clients.model.Client;
-import com.bfb.rental.business.vehicles.model.Vehicle;
 import com.bfb.rental.infrastructures.bdd.clients.repositories.entities.ClientEntity;
-import com.bfb.rental.infrastructures.bdd.clients.repositories.entities.VehicleEntity;
 import com.bfb.rental.infrastructures.bdd.common.model.mappers.AbstractBddMapper;
 
-import lombok.AllArgsConstructor;
-
-@Service
-@AllArgsConstructor
+@Component
 public class ClientBddMapper extends AbstractBddMapper<Client, ClientEntity> {
-        
-    private VehicleBddMapper vehicleMapper;
 
     @Override
-    public Client from(final ClientEntity input) {
+    public Client from(final ClientEntity entity) {
+        if (entity == null) return null;
+
         return Client.builder()
-                .identifier(UUID.fromString(input.getIdentifier()))
-                .lastname(input.getLastname())
-                .firstname(input.getFirstname())
-                .date_of_birth(input.getDate_of_birth())
-                .num_permis(input.getNum_permis())
-                .address(input.getAddress())
-                .vehicles(Objects.requireNonNullElse(input.getVehicles(), Collections.<VehicleEntity>emptySet()).stream()
-                        .map(this.vehicleMapper::from)
-                        .collect(Collectors.toSet()))
+                .id(UUID.fromString(entity.getIdentifier()))
+                .nom(entity.getLastname())
+                .prenom(entity.getFirstname())
+                .dateNaissance(entity.getDate_of_birth().toInstant()
+                        .atZone(java.time.ZoneId.systemDefault())
+                        .toLocalDate())
+                .numPermis(entity.getNum_permis())
+                .adresse(entity.getAddress())
+                .dateCreation(entity.getDateCreation() != null ?
+                        entity.getDateCreation().toInstant()
+                                .atZone(java.time.ZoneId.systemDefault())
+                                .toLocalDateTime() : null)
+                .dateModification(entity.getDateModification() != null ?
+                        entity.getDateModification().toInstant()
+                                .atZone(java.time.ZoneId.systemDefault())
+                                .toLocalDateTime() : null)
                 .build();
     }
 
     @Override
-    public ClientEntity to(final Client object) {
+    public ClientEntity to(final Client model) {
+        if (model == null) return null;
+
         return ClientEntity.builder()
-                .identifier(object.getIdentifier().toString())
-                .lastname(object.getLastname())
-                .firstname(object.getFirstname())
-                .date_of_birth(object.getDate_of_birth())
-                .num_permis(object.getNum_permis())
-                .address(object.getAddress())
-                .vehicles(Objects.requireNonNullElse(object.getVehicles(), Collections.<Vehicle>emptySet()).stream()
-                        .map(this.vehicleMapper::to)
-                        .collect(Collectors.toSet()))
+                .identifier(model.getId().toString())
+                .lastname(model.getNom())
+                .firstname(model.getPrenom())
+                .date_of_birth(java.util.Date.from(
+                        model.getDateNaissance()
+                                .atStartOfDay(java.time.ZoneId.systemDefault())
+                                .toInstant()))
+                .num_permis(model.getNumPermis())
+                .address(model.getAdresse())
+                .dateCreation(java.util.Date.from(
+                        model.getDateCreation()
+                                .atZone(java.time.ZoneId.systemDefault())
+                                .toInstant()))
+                .dateModification(java.util.Date.from(
+                        model.getDateModification()
+                                .atZone(java.time.ZoneId.systemDefault())
+                                .toInstant()))
                 .build();
     }
 }

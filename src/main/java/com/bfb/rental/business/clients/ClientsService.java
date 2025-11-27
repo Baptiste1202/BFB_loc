@@ -8,7 +8,11 @@ import java.util.UUID;
 
 import com.bfb.rental.business.clients.model.Client;
 import com.bfb.rental.infrastructures.bdd.clients.ClientsBddService;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
+@Service
+@AllArgsConstructor
 public class ClientsService {
 
     /**

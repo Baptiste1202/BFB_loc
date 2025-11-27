@@ -1,26 +1,32 @@
 package com.bfb.rental.business.contrats.model;
 
 
-import jakarta.validation.constraints.*;
-import lombok.*;
+import com.bfb.rental.business.common.EtatContrat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Contrat {
-
-    @NotBlank(message = "Le client est obligatoire")
-    private String clientId;
-
-    @NotBlank(message = "Le véhicule est obligatoire")
-    private String vehiculeId;
-
-    @NotNull(message = "La date de début est obligatoire")
-    @FutureOrPresent(message = "La date de début doit être aujourd'hui ou dans le futur")
+    private UUID id;
+    private UUID clientId;
+    private UUID vehiculeId;
     private LocalDate dateDebut;
-
-    @NotNull(message = "La date de fin est obligatoire")
-    @Future(message = "La date de fin doit être dans le futur")
     private LocalDate dateFin;
+    private EtatContrat etat;
+    private BigDecimal montantTotal;
+    private LocalDate dateRetourReel;
+    private BigDecimal penaliteRetard;
+    private String motifAnnulation;
+    private LocalDateTime dateCreation;
+    private LocalDateTime dateModification;
 }
