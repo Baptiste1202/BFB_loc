@@ -24,14 +24,6 @@ public class ClientBddMapper extends AbstractBddMapper<Client, ClientEntity> {
                         .toLocalDate())
                 .numPermis(entity.getNum_permis())
                 .adresse(entity.getAddress())
-                .dateCreation(entity.getDateCreation() != null ?
-                        entity.getDateCreation().toInstant()
-                                .atZone(java.time.ZoneId.systemDefault())
-                                .toLocalDateTime() : null)
-                .dateModification(entity.getDateModification() != null ?
-                        entity.getDateModification().toInstant()
-                                .atZone(java.time.ZoneId.systemDefault())
-                                .toLocalDateTime() : null)
                 .build();
     }
 
@@ -49,14 +41,6 @@ public class ClientBddMapper extends AbstractBddMapper<Client, ClientEntity> {
                                 .toInstant()))
                 .num_permis(model.getNumPermis())
                 .address(model.getAdresse())
-                .dateCreation(java.util.Date.from(
-                        model.getDateCreation()
-                                .atZone(java.time.ZoneId.systemDefault())
-                                .toInstant()))
-                .dateModification(java.util.Date.from(
-                        model.getDateModification()
-                                .atZone(java.time.ZoneId.systemDefault())
-                                .toInstant()))
                 .build();
     }
 }
