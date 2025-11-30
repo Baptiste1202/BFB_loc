@@ -15,12 +15,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @Builder(toBuilder = true)
-@AllArgsConstructor
 @EqualsAndHashCode
 @ToString
+@AllArgsConstructor
 public class Vehicle {
 
-    private final UUID identifier;
+    private UUID identifier;
     
     /**
      * Marque du véhicule
@@ -50,7 +50,7 @@ public class Vehicle {
     /**
      * Date d'acquisition du véhicule
      */
-    private Date acquisition_date;
+    private Date acquisitionDate;
 
     /**
      * Etat du véhicule

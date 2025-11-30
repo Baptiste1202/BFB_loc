@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
+
 public class ClientBddMapper extends AbstractBddMapper<Client, ClientEntity> {
         
     private VehicleBddMapper vehicleMapper;
@@ -24,11 +25,11 @@ public class ClientBddMapper extends AbstractBddMapper<Client, ClientEntity> {
     @Override
     public Client from(final ClientEntity input) {
         return Client.builder()
-                .identifier(UUID.fromString(input.getIdentifier()))
+                .identifier(UUID.fromString(input.getIdentifier().toString()))
                 .lastname(input.getLastname())
                 .firstname(input.getFirstname())
-                .date_of_birth(input.getDate_of_birth())
-                .num_permis(input.getNum_permis())
+                .dateOfBirth(input.getDateOfBirth())
+                .numPermis(input.getNumPermis())
                 .address(input.getAddress())
                 .vehicles(Objects.requireNonNullElse(input.getVehicles(), Collections.<VehicleEntity>emptySet()).stream()
                         .map(this.vehicleMapper::from)
@@ -39,11 +40,11 @@ public class ClientBddMapper extends AbstractBddMapper<Client, ClientEntity> {
     @Override
     public ClientEntity to(final Client object) {
         return ClientEntity.builder()
-                .identifier(object.getIdentifier().toString())
+                .identifier(object.getIdentifier())
                 .lastname(object.getLastname())
                 .firstname(object.getFirstname())
-                .date_of_birth(object.getDate_of_birth())
-                .num_permis(object.getNum_permis())
+                .dateOfBirth(object.getDateOfBirth())
+                .numPermis(object.getNumPermis())
                 .address(object.getAddress())
                 .vehicles(Objects.requireNonNullElse(object.getVehicles(), Collections.<Vehicle>emptySet()).stream()
                         .map(this.vehicleMapper::to)

@@ -1,10 +1,13 @@
 package com.example.demo.interfaces.clients.model.output;
 
-import com.example.demo.interfaces.clients.model.common.model.output.AbstractOutput;
-import lombok.*;
-
 import java.io.Serial;
-import java.util.UUID;
+
+import com.example.demo.interfaces.clients.model.common.model.output.AbstractOutput;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Data
 @AllArgsConstructor

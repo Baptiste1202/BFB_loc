@@ -7,22 +7,24 @@ import java.util.UUID;
 
 import com.example.demo.business.vehicles.model.Vehicle;
 
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Getter
+@Setter
 @Builder(toBuilder = true)
-@AllArgsConstructor
 @EqualsAndHashCode
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor(force = true)
 public class Client {
 
-    @NotNull(message = "L'identifiant ne peut pas être nul")
-    private final UUID identifier;
+    private UUID identifier;
 
     /**
      * Nom de famille du client
@@ -37,12 +39,12 @@ public class Client {
     /**
      * Date de naissance du client
      */
-    private Date date_of_birth;
+    private Date dateOfBirth;
 
     /**
      * Date de naissance du client
      */
-    private String num_permis;
+    private String numPermis;
 
     /**
      * Adresse du client
@@ -53,6 +55,6 @@ public class Client {
      * Collection des véhicules associés au client
      */
     @Builder.Default
-    private final Collection<Vehicle> vehicles = Collections.emptySet();
+    private Collection<Vehicle> vehicles = Collections.emptySet();
     
 }
