@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
+import com.bfb.rental.business.vehicles.model.TransportVehicle;
 import com.bfb.rental.business.vehicles.model.Vehicule;
 import com.bfb.rental.infrastructures.bdd.vehicules.repositories.VehiculeRepository;
 import com.bfb.rental.infrastructures.bdd.vehicules.repositories.entities.VehiculeEntity;
@@ -49,6 +50,16 @@ public class VehiculeBddService {
         return this.mapper.from(
                 this.repository.save(this.mapper.to(vehicule))
         );
+    }
+
+    /**
+     * Sauvegarde un TransportVehicle (Voiture ou Camion)
+     */
+    public TransportVehicle save(final TransportVehicle transportVehicle) {
+        Objects.requireNonNull(transportVehicle, "Impossible de sauvegarder un véhicule nul");
+        VehiculeEntity entity = this.mapper.toTransportVehicle(transportVehicle);
+        VehiculeEntity saved = this.repository.save(entity);
+        return this.mapper.fromTransportVehicle(saved);
     }
 
     public void delete(final UUID identifier) {

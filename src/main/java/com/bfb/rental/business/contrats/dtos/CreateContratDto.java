@@ -1,12 +1,13 @@
 package com.bfb.rental.business.contrats.dtos;
 
+import com.bfb.rental.business.clients.model.Client;
+import com.bfb.rental.business.vehicles.model.TransportVehicle;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.UUID;
 
 @Data
 @NoArgsConstructor
@@ -14,10 +15,10 @@ import java.util.UUID;
 public class CreateContratDto {
 
     @NotNull(message = "Le client est obligatoire")
-    private UUID clientId;
+    private Client client;
 
     @NotNull(message = "Le véhicule est obligatoire")
-    private UUID vehiculeId;
+    private TransportVehicle vehicule;
 
     @NotNull(message = "La date de début est obligatoire")
     @FutureOrPresent(message = "La date de début doit être aujourd'hui ou dans le futur")

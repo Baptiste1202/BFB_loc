@@ -31,4 +31,9 @@ public class VehiculeEntity {
     private BigDecimal prixLocationJournalier;
     private Date dateCreation;
     private Date dateModification;
+    
+    // Champs spécifiques au type de véhicule
+    private String type; // VOITURE ou CAMION
+    private Integer nombrePlaces; // Pour les voitures
+    private Double volume; // Pour les camions (en m³)
 }
