@@ -36,7 +36,7 @@ public class VehicleFactory {
                 couleur,
                 immatriculation,
                 dateAcquisition,
-                EtatVehicule.DISPONIBLE,
+                EtatVehicule.AVAILABLE,
                 prixLocationJournalier,
                 LocalDateTime.now(),
                 LocalDateTime.now(),
