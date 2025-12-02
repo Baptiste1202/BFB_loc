@@ -19,7 +19,7 @@ public class VehiculeBddMapper extends AbstractBddMapper<Vehicule, VehiculeEntit
     public Vehicule from(final VehiculeEntity entity) {
         if (entity == null) return null;
 
-        return Vehicule.builder()
+        return TransportVehicle.builder()
                 .id(UUID.fromString(entity.getIdentifier()))
                 .marque(entity.getMarque())
                 .modele(entity.getModele())

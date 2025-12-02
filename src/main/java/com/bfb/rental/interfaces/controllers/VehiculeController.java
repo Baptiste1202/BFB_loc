@@ -4,13 +4,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import com.bfb.rental.business.common.EtatVehicule;
 import com.bfb.rental.business.vehicles.VehicleService;
-import com.bfb.rental.business.vehicles.model.Vehicule;
 import com.bfb.rental.business.vehicles.dtos.CreateVehiculeDto;
-import com.bfb.rental.interfaces.dtos.UpdateVehiculeDto;
+import com.bfb.rental.business.vehicles.model.TransportVehicle;
+import com.bfb.rental.business.vehicles.dtos.UpdateVehiculeDto;
 import com.bfb.rental.interfaces.exceptions.ResourceNotFoundException;
 import com.bfb.rental.interfaces.mappers.VehiculeMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -33,14 +32,14 @@ public class VehiculeController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Récupère tous les véhicules")
-    public Collection<Vehicule> getAll() {
+    public Collection<TransportVehicle> getAll() {
         return Objects.requireNonNullElse(this.service.getAll(), Collections.emptySet());
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Crée un nouveau véhicule")
-    public Vehicule create(@RequestBody final CreateVehiculeDto input) {
+    public TransportVehicle create(@RequestBody final CreateVehiculeDto input) {
         log.info("Création d'un nouveau véhicule : {} {}", input.getMarque(), input.getModele());
         return this.service.create(VehiculeMapper.toEntity(input));
     }
@@ -48,7 +47,7 @@ public class VehiculeController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "/{idVehicule}", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Récupère un véhicule par ID")
-    public Vehicule getOne(@PathVariable("idVehicule") final String identifier) {
+    public TransportVehicle getOne(@PathVariable("idVehicule") final String identifier) {
         return this.service.getOne(UUID.fromString(identifier))
                 .orElseThrow(() -> new ResourceNotFoundException(
                         String.format("Le véhicule d'identifiant %s n'a pas été trouvé.", identifier)
@@ -64,12 +63,12 @@ public class VehiculeController {
     ) {
         log.info("Modification du véhicule : {}", identifier);
 
-        Vehicule existing = this.service.getOne(UUID.fromString(identifier))
+        TransportVehicle existing = this.service.getOne(UUID.fromString(identifier))
                 .orElseThrow(() -> new ResourceNotFoundException(
                         String.format("Le véhicule d'identifiant %s n'a pas été trouvé.", identifier)
                 ));
 
-        Vehicule updated = UpdateVehiculeDto.merge(input, existing);
+        TransportVehicle updated = UpdateVehiculeDto.merge(input, existing);
         this.service.update(updated);
     }
 
@@ -84,10 +83,10 @@ public class VehiculeController {
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping(value = "/{idVehicule}/panne", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Déclare un véhicule en panne")
-    public Vehicule declarePanne(@PathVariable("idVehicule") final String identifier) {
+    public TransportVehicle declarePanne(@PathVariable("idVehicule") final String identifier) {
         log.info("Déclaration en panne du véhicule : {}", identifier);
 
-        Vehicule vehicule = this.service.getOne(UUID.fromString(identifier))
+        TransportVehicle vehicule = this.service.getOne(UUID.fromString(identifier))
                 .orElseThrow(() -> new ResourceNotFoundException(
                         String.format("Le véhicule d'identifiant %s n'a pas été trouvé.", identifier)
                 ));
@@ -101,10 +100,10 @@ public class VehiculeController {
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping(value = "/{idVehicule}/reparer", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Répare un véhicule")
-    public Vehicule repair(@PathVariable("idVehicule") final String identifier) {
+    public TransportVehicle repair(@PathVariable("idTransportVehicle") final String identifier) {
         log.info("Réparation du véhicule : {}", identifier);
 
-        Vehicule vehicule = this.service.getOne(UUID.fromString(identifier))
+        TransportVehicle vehicule = this.service.getOne(UUID.fromString(identifier))
                 .orElseThrow(() -> new ResourceNotFoundException(
                         String.format("Le véhicule d'identifiant %s n'a pas été trouvé.", identifier)
                 ));

@@ -5,12 +5,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import com.bfb.rental.business.common.EtatContrat;
 import com.bfb.rental.business.contrats.ContratsService;
 import com.bfb.rental.business.contrats.dtos.CreateContratDto;
-import com.bfb.rental.interfaces.dtos.UpdateContratDto;
+import com.bfb.rental.business.contrats.dtos.UpdateContratDto;
 import com.bfb.rental.business.contrats.model.Contrat;
 import com.bfb.rental.interfaces.exceptions.ResourceNotFoundException;
 import com.bfb.rental.interfaces.mappers.ContratMapper;

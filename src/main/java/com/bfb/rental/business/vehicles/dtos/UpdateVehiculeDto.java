@@ -1,9 +1,13 @@
-package com.bfb.rental.interfaces.dtos;
+package com.bfb.rental.business.vehicles.dtos;
 
+import com.bfb.rental.business.contrats.model.Contrat;
+import com.bfb.rental.business.contrats.dtos.UpdateContratDto;
+import com.bfb.rental.business.vehicles.model.TransportVehicle;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +32,7 @@ import lombok.*;
  * - prixLocationJournalier (tarification peut changer)
  * - etat (MAIS attention : logique métier complexe)
  */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -106,4 +111,31 @@ public class UpdateVehiculeDto {
 
         return fields;
     }
+
+    public static TransportVehicle merge(final UpdateVehiculeDto dto, final TransportVehicle existing) {
+
+        if (dto.getMarque() != null) {
+            existing.setMarque(dto.getMarque());
+        }
+        if (dto.getModele() != null) {
+            existing.setModele(dto.getModele());
+        }
+        if (dto.getMotorisation() != null) {
+            existing.setMotorisation(dto.getMotorisation());
+        }
+        if (dto.getCouleur() != null) {
+            existing.setCouleur(dto.getCouleur());
+        }
+        if (dto.getDateAcquisition() != null) {
+            existing.setDateAcquisition(dto.getDateAcquisition());
+        }
+        if (dto.getPrixLocationJournalier() != null) {
+            existing.setPrixLocationJournalier(dto.getPrixLocationJournalier());
+        }
+
+        existing.setDateModification(LocalDateTime.now());
+
+        return existing;
+    }
+
 }

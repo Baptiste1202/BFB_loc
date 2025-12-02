@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateVehiculeDto {
+public abstract class CreateVehiculeDto {
 
     @NotBlank(message = "La marque est obligatoire")
     @Size(min = 2, max = 50)

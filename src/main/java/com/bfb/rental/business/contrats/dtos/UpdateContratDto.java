@@ -1,4 +1,4 @@
-package com.bfb.rental.interfaces.dtos;
+package com.bfb.rental.business.contrats.dtos;
 
 import com.bfb.rental.business.contrats.model.Contrat;
 import jakarta.validation.constraints.*;
