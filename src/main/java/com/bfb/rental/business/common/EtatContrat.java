@@ -1,31 +1,32 @@
 package com.bfb.rental.business.common;
 
-/**
- * Énumération des états possibles d'un contrat de location
- */
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 public enum EtatContrat {
-    /**
-     * Contrat créé mais pas encore confirmé
-     */
-    CREATED,
+    PENDING,
+    IN_PROGRESS,
+    ENDED,
+    LATE,
+    CANCELED;
 
-    /**
-     * Contrat confirmé et actif
-     */
-    ACTIVE,
+    public static final String ACCEPTABLE_VALUES = Set.of( PENDING,
+            IN_PROGRESS,
+            ENDED,
+            LATE,
+            CANCELED).stream().map(Enum::name).collect(Collectors.joining(", "));
 
-    /**
-     * Contrat complété avec retour du véhicule
-     */
-    COMPLETED,
+    public static EtatContrat fromOrDefault(final String name) {
+        return EtatContrat.from(name).orElse(EtatContrat.ENDED);
+    }
 
-    /**
-     * Contrat annulé
-     */
-    CANCELLED,
-
-    /**
-     * Contrat suspendu
-     */
-    SUSPENDED
+    public static Optional<EtatContrat> from(final String name) {
+        try {
+            return Optional.ofNullable(name)
+                    .map(EtatContrat::valueOf);
+        } catch (final IllegalArgumentException e) {
+            return Optional.empty();
+        }
+    }
 }
