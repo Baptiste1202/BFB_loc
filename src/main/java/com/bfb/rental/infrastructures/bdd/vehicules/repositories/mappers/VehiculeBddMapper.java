@@ -1,5 +1,10 @@
 package com.bfb.rental.infrastructures.bdd.vehicules.repositories.mappers;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.stereotype.Component;
@@ -7,127 +12,107 @@ import org.springframework.stereotype.Component;
 import com.bfb.rental.business.common.EtatVehicule;
 import com.bfb.rental.business.vehicles.model.Camion;
 import com.bfb.rental.business.vehicles.model.TransportVehicle;
-import com.bfb.rental.business.vehicles.model.Vehicule;
 import com.bfb.rental.business.vehicles.model.Voiture;
 import com.bfb.rental.infrastructures.bdd.common.model.mappers.AbstractBddMapper;
 import com.bfb.rental.infrastructures.bdd.vehicules.repositories.entities.VehiculeEntity;
 
 @Component
-public class VehiculeBddMapper extends AbstractBddMapper<Vehicule, VehiculeEntity> {
+public class VehiculeBddMapper extends AbstractBddMapper<TransportVehicle, VehiculeEntity> {
 
-    @Override
-    public Vehicule from(final VehiculeEntity entity) {
-        if (entity == null) return null;
+        @Override
+        public TransportVehicle from(final VehiculeEntity entity) {
+                if (entity == null) return null;
 
-        return Vehicule.builder()
-                .id(UUID.fromString(entity.getIdentifier()))
-                .marque(entity.getMarque())
-                .modele(entity.getModele())
-                .motorisation(entity.getMotorisation())
-                .couleur(entity.getCouleur())
-                .immatriculation(entity.getImmatriculation())
-                .dateAcquisition(entity.getDateAcquisition().toInstant()
-                        .atZone(java.time.ZoneId.systemDefault())
-                        .toLocalDate())
-                .etat(EtatVehicule.valueOf(entity.getEtat()))
-                .prixLocationJournalier(entity.getPrixLocationJournalier())
-                .dateCreation(entity.getDateCreation().toInstant()
-                        .atZone(java.time.ZoneId.systemDefault())
-                        .toLocalDateTime())
-                .dateModification(entity.getDateModification().toInstant()
-                        .atZone(java.time.ZoneId.systemDefault())
-                        .toLocalDateTime())
-                .build();
-    }
+                UUID id = entity.getIdentifier() != null ? UUID.fromString(entity.getIdentifier()) : null;
+                String marque = entity.getMarque();
+                String modele = entity.getModele();
+                String motorisation = entity.getMotorisation();
+                String couleur = entity.getCouleur();
+                String immatriculation = entity.getImmatriculation();
+                LocalDate dateAcquisition = entity.getDateAcquisition() != null
+                        ? entity.getDateAcquisition().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                        : null;
+                EtatVehicule etat = entity.getEtat() != null ? EtatVehicule.valueOf(entity.getEtat()) : null;
+                BigDecimal prixLocationJournalier = entity.getPrixLocationJournalier();
+                LocalDateTime dateCreation = entity.getDateCreation() != null
+                        ? entity.getDateCreation().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()
+                        : null;
+                LocalDateTime dateModification = entity.getDateModification() != null
+                        ? entity.getDateModification().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime()
+                        : null;
 
-    /**
-     * Convertit un VehiculeEntity en TransportVehicle (Voiture ou Camion)
-     */
-    public TransportVehicle fromTransportVehicle(final VehiculeEntity entity) {
-        if (entity == null) return null;
+                if ("VOITURE".equalsIgnoreCase(entity.getType())) {
+                        return Voiture.builder()
+                                .id(id)
+                                .marque(marque)
+                                .modele(modele)
+                                .motorisation(motorisation)
+                                .couleur(couleur)
+                                .immatriculation(immatriculation)
+                                .dateAcquisition(dateAcquisition)
+                                .etat(etat)
+                                .prixLocationJournalier(prixLocationJournalier)
+                                .dateCreation(dateCreation)
+                                .dateModification(dateModification)
+                                .nombrePlaces(entity.getNombrePlaces() != null ? entity.getNombrePlaces() : 5)
+                                .build();
+                } else if ("CAMION".equalsIgnoreCase(entity.getType())) {
+                        return Camion.builder()
+                                .id(id)
+                                .marque(marque)
+                                .modele(modele)
+                                .motorisation(motorisation)
+                                .couleur(couleur)
+                                .immatriculation(immatriculation)
+                                .dateAcquisition(dateAcquisition)
+                                .etat(etat)
+                                .prixLocationJournalier(prixLocationJournalier)
+                                .dateCreation(dateCreation)
+                                .dateModification(dateModification)
+                                .volume(entity.getVolume() != null ? entity.getVolume() : 0.0)
+                                .build();
+                }
 
-        UUID id = UUID.fromString(entity.getIdentifier());
-        String marque = entity.getMarque();
-        String modele = entity.getModele();
-        String motorisation = entity.getMotorisation();
-        String couleur = entity.getCouleur();
-        String immatriculation = entity.getImmatriculation();
-        var dateAcquisition = entity.getDateAcquisition().toInstant()
-                .atZone(java.time.ZoneId.systemDefault())
-                .toLocalDate();
-        EtatVehicule etat = EtatVehicule.valueOf(entity.getEtat());
-        var prixLocationJournalier = entity.getPrixLocationJournalier();
-        var dateCreation = entity.getDateCreation().toInstant()
-                .atZone(java.time.ZoneId.systemDefault())
-                .toLocalDateTime();
-        var dateModification = entity.getDateModification().toInstant()
-                .atZone(java.time.ZoneId.systemDefault())
-                .toLocalDateTime();
-
-        if ("VOITURE".equals(entity.getType())) {
-            return Voiture.builder()
-                    .id(id)
-                    .marque(marque)
-                    .modele(modele)
-                    .motorisation(motorisation)
-                    .couleur(couleur)
-                    .immatriculation(immatriculation)
-                    .dateAcquisition(dateAcquisition)
-                    .etat(etat)
-                    .prixLocationJournalier(prixLocationJournalier)
-                    .dateCreation(dateCreation)
-                    .dateModification(dateModification)
-                    .nombrePlaces(entity.getNombrePlaces() != null ? entity.getNombrePlaces() : 5)
-                    .build();
-        } else if ("CAMION".equals(entity.getType())) {
-            return Camion.builder()
-                    .id(id)
-                    .marque(marque)
-                    .modele(modele)
-                    .motorisation(motorisation)
-                    .couleur(couleur)
-                    .immatriculation(immatriculation)
-                    .dateAcquisition(dateAcquisition)
-                    .etat(etat)
-                    .prixLocationJournalier(prixLocationJournalier)
-                    .dateCreation(dateCreation)
-                    .dateModification(dateModification)
-                    .volume(entity.getVolume() != null ? entity.getVolume() : 0.0)
-                    .build();
+                // Par défaut, retourner une Voiture basique si le type est inconnu
+                return Voiture.builder()
+                        .id(id)
+                        .marque(marque)
+                        .modele(modele)
+                        .motorisation(motorisation)
+                        .couleur(couleur)
+                        .immatriculation(immatriculation)
+                        .dateAcquisition(dateAcquisition)
+                        .etat(etat)
+                        .prixLocationJournalier(prixLocationJournalier)
+                        .dateCreation(dateCreation)
+                        .dateModification(dateModification)
+                        .nombrePlaces(entity.getNombrePlaces() != null ? entity.getNombrePlaces() : 0)
+                        .build();
         }
 
-        // Fallback sur Vehicule
-        return from(entity);
-    }
-
-    /**
-     * Convertit un TransportVehicle (Voiture ou Camion) en VehiculeEntity
-     */
-    public VehiculeEntity toTransportVehicle(final TransportVehicle model) {
+    @Override
+    public VehiculeEntity to(final TransportVehicle model) {
         if (model == null) return null;
 
         VehiculeEntity.VehiculeEntityBuilder builder = VehiculeEntity.builder()
-                .identifier(model.getId().toString())
+                .identifier(model.getId() != null ? model.getId().toString() : null)
                 .marque(model.getMarque())
                 .modele(model.getModele())
                 .motorisation(model.getMotorisation())
                 .couleur(model.getCouleur())
                 .immatriculation(model.getImmatriculation())
-                .dateAcquisition(java.util.Date.from(
-                        model.getDateAcquisition()
-                                .atStartOfDay(java.time.ZoneId.systemDefault())
-                                .toInstant()))
-                .etat(model.getEtat().name())
+                .dateAcquisition(model.getDateAcquisition() != null
+                        ? Date.from(model.getDateAcquisition().atStartOfDay(ZoneId.systemDefault()).toInstant())
+                        : null)
+                .etat(model.getEtat() != null ? model.getEtat().name() : null)
                 .prixLocationJournalier(model.getPrixLocationJournalier())
-                .dateCreation(java.util.Date.from(
-                        model.getDateCreation()
-                                .atZone(java.time.ZoneId.systemDefault())
-                                .toInstant()))
-                .dateModification(java.util.Date.from(
-                        model.getDateModification()
-                                .atZone(java.time.ZoneId.systemDefault())
-                                .toInstant()))
-                .type(model.getType());
+                .dateCreation(model.getDateCreation() != null
+                        ? Date.from(model.getDateCreation().atZone(ZoneId.systemDefault()).toInstant())
+                        : null)
+                .dateModification(model.getDateModification() != null
+                        ? Date.from(model.getDateModification().atZone(ZoneId.systemDefault()).toInstant())
+                        : null)
+                .type(model instanceof Voiture ? "VOITURE" : model instanceof Camion ? "CAMION" : "VOITURE");
 
         if (model instanceof Voiture) {
             Voiture voiture = (Voiture) model;
@@ -138,33 +123,5 @@ public class VehiculeBddMapper extends AbstractBddMapper<Vehicule, VehiculeEntit
         }
 
         return builder.build();
-    }
-
-    @Override
-    public VehiculeEntity to(final Vehicule model) {
-        if (model == null) return null;
-
-        return VehiculeEntity.builder()
-                .identifier(model.getId().toString())
-                .marque(model.getMarque())
-                .modele(model.getModele())
-                .motorisation(model.getMotorisation())
-                .couleur(model.getCouleur())
-                .immatriculation(model.getImmatriculation())
-                .dateAcquisition(java.util.Date.from(
-                        model.getDateAcquisition()
-                                .atStartOfDay(java.time.ZoneId.systemDefault())
-                                .toInstant()))
-                .etat(model.getEtat().name())
-                .prixLocationJournalier(model.getPrixLocationJournalier())
-                .dateCreation(java.util.Date.from(
-                        model.getDateCreation()
-                                .atZone(java.time.ZoneId.systemDefault())
-                                .toInstant()))
-                .dateModification(java.util.Date.from(
-                        model.getDateModification()
-                                .atZone(java.time.ZoneId.systemDefault())
-                                .toInstant()))
-                .build();
     }
 }

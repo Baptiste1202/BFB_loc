@@ -30,6 +30,11 @@ public class Camion implements TransportVehicle {
     private double volume; // Volume en m³
 
     @Override
+    public UUID getId() {
+        return this.id;
+    }
+
+    @Override
     public String getType() {
         return "CAMION";
     }

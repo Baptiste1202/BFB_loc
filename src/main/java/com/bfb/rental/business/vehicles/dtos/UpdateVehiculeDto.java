@@ -112,30 +112,4 @@ public class UpdateVehiculeDto {
         return fields;
     }
 
-    public static TransportVehicle merge(final UpdateVehiculeDto dto, final TransportVehicle existing) {
-
-        if (dto.getMarque() != null) {
-            existing.setMarque(dto.getMarque());
-        }
-        if (dto.getModele() != null) {
-            existing.setModele(dto.getModele());
-        }
-        if (dto.getMotorisation() != null) {
-            existing.setMotorisation(dto.getMotorisation());
-        }
-        if (dto.getCouleur() != null) {
-            existing.setCouleur(dto.getCouleur());
-        }
-        if (dto.getDateAcquisition() != null) {
-            existing.setDateAcquisition(dto.getDateAcquisition());
-        }
-        if (dto.getPrixLocationJournalier() != null) {
-            existing.setPrixLocationJournalier(dto.getPrixLocationJournalier());
-        }
-
-        existing.setDateModification(LocalDateTime.now());
-
-        return existing;
-    }
-
 }

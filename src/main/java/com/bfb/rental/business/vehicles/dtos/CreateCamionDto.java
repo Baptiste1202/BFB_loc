@@ -13,11 +13,10 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-@Setter
-@Getter
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class CreateCamionDto extends CreateVehiculeDto {
 
     @NotNull(message = "Le volume est obligatoire")

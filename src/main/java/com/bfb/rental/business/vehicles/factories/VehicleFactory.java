@@ -17,34 +17,6 @@ public class VehicleFactory {
     }
 
     public static TransportVehicle createVehicle(
-            String type,
-            String marque,
-            String modele,
-            String motorisation,
-            String couleur,
-            String immatriculation,
-            LocalDate dateAcquisition,
-            BigDecimal prixLocationJournalier,
-            Object specificData) {
-        
-        return createVehicle(
-                UUID.randomUUID(),
-                type,
-                marque,
-                modele,
-                motorisation,
-                couleur,
-                immatriculation,
-                dateAcquisition,
-                EtatVehicule.AVAILABLE,
-                prixLocationJournalier,
-                LocalDateTime.now(),
-                LocalDateTime.now(),
-                specificData
-        );
-    }
-
-    public static TransportVehicle createVehicle(
             UUID id,
             String type,
             String marque,
