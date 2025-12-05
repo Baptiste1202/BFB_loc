@@ -68,8 +68,8 @@ public class VehiculeController {
                         String.format("Le véhicule d'identifiant %s n'a pas été trouvé.", identifier)
                 ));
 
-        TransportVehicle updated = UpdateVehiculeDto.merge(input, existing);
-        this.service.update(updated);
+        // TransportVehicle updated = UpdateVehiculeDto.merge(input, existing);
+        // this.service.update(updated);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)

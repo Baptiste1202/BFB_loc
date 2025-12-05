@@ -24,4 +24,6 @@ public interface TransportVehicle {
     BigDecimal getPrixLocationJournalier();
     LocalDateTime getDateCreation();
     LocalDateTime getDateModification();
+
+    void setEtat(EtatVehicule etatVehicule);
 }

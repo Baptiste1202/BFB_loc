@@ -1,17 +1,18 @@
 package com.bfb.rental.business.vehicles;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.bfb.rental.business.common.EtatVehicule;
 import com.bfb.rental.business.vehicles.dtos.CreateCamionDto;
 import com.bfb.rental.business.vehicles.dtos.CreateVoitureDto;
 import com.bfb.rental.business.vehicles.factories.VehicleFactory;
 import com.bfb.rental.business.vehicles.model.Camion;
 import com.bfb.rental.business.vehicles.model.TransportVehicle;
-import com.bfb.rental.business.vehicles.model.Vehicule;
 import com.bfb.rental.business.vehicles.model.Voiture;
 import com.bfb.rental.infrastructures.bdd.vehicules.VehiculeBddService;
 import lombok.AllArgsConstructor;
@@ -50,6 +51,7 @@ public class VehicleService {
         log.info("Création d'une voiture : {} {}", dto.getMarque(), dto.getModele());
         
         TransportVehicle transportVehicle = VehicleFactory.createVehicle(
+                UUID.randomUUID(),
                 "VOITURE",
                 dto.getMarque(),
                 dto.getModele(),
@@ -57,7 +59,10 @@ public class VehicleService {
                 dto.getCouleur(),
                 dto.getImmatriculation(),
                 dto.getDateAcquisition(),
+                EtatVehicule.AVAILABLE,
                 dto.getPrixLocationJournalier(),
+                LocalDateTime.now(),
+                LocalDateTime.now(),
                 dto.getNombrePlaces()
         );
         
@@ -75,6 +80,7 @@ public class VehicleService {
         log.info("Création d'un camion : {} {}", dto.getMarque(), dto.getModele());
         
         TransportVehicle transportVehicle = VehicleFactory.createVehicle(
+                UUID.randomUUID(),
                 "CAMION",
                 dto.getMarque(),
                 dto.getModele(),
@@ -82,7 +88,10 @@ public class VehicleService {
                 dto.getCouleur(),
                 dto.getImmatriculation(),
                 dto.getDateAcquisition(),
+                EtatVehicule.AVAILABLE,
                 dto.getPrixLocationJournalier(),
+                LocalDateTime.now(),
+                LocalDateTime.now(),
                 dto.getVolume()
         );
         

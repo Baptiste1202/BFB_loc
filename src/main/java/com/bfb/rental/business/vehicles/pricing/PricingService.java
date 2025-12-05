@@ -34,7 +34,7 @@ public class PricingService {
             throw new IllegalArgumentException("Véhicule non présent dans le contrat");
         }
         PricingStrategy strategy = strategyFactory.createStrategy(strategyName);
-        return calculateContractPrice(contrat, contrat.getVehicule(), strategy);
+        return calculateContractPrice(contrat, strategy);
     }
 
     /**
@@ -45,8 +45,8 @@ public class PricingService {
      * @param strategy  la stratégie à utiliser
      * @return le prix total calculé
      */
-    public BigDecimal calculateContractPrice(Contrat contrat, TransportVehicle vehicle, PricingStrategy strategy) {
-        return strategy.calculatePrice(contrat, vehicle);
+    public BigDecimal calculateContractPrice(Contrat contrat, PricingStrategy strategy) {
+        return strategy.calculatePrice(contrat);
     }
 
     /**
@@ -59,6 +59,6 @@ public class PricingService {
         if (contrat.getVehicule() == null) {
             throw new IllegalArgumentException("Véhicule non présent dans le contrat");
         }
-        return calculateContractPrice(contrat, contrat.getVehicule(), strategyFactory.getDefaultStrategy());
+        return calculateContractPrice(contrat, strategyFactory.getDefaultStrategy());
     }
 }

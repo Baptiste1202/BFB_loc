@@ -4,6 +4,7 @@ import com.bfb.rental.business.vehicles.model.Camion;
 import com.bfb.rental.business.vehicles.model.TransportVehicle;
 import com.bfb.rental.business.vehicles.model.Voiture;
 import com.bfb.rental.business.common.EtatVehicule;
+import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

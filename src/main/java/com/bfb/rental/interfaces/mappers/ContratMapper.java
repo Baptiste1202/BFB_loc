@@ -13,8 +13,8 @@ public class ContratMapper {
     public static Contrat toEntity(final CreateContratDto dto) {
         return Contrat.builder()
                 .id(UUID.randomUUID())
-                .clientId(dto.getClientId())
-                .vehiculeId(dto.getVehiculeId())
+                .client(dto.getClient())
+                .vehicule(dto.getVehicule())
                 .dateDebut(dto.getDateDebut())
                 .dateFin(dto.getDateFin())
                 .etat(EtatContrat.PENDING)
