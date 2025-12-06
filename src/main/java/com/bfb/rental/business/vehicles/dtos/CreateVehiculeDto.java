@@ -1,6 +1,9 @@
 package com.bfb.rental.business.vehicles.dtos;
 
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,10 +12,32 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type"
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = CreateVoitureDto.class, name = "voiture"),
+        @JsonSubTypes.Type(value = CreateCamionDto.class, name = "camion")
+})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(
+        name = "CreateVehiculeDto",
+        title = "Création de Véhicule",
+        description = """
+        Crée un nouveau véhicule. Choisir le type:
+        - **voiture**: ajouter 'nombrePlaces' (2-9, défaut: 5)
+        - **camion**: ajouter 'volume' en m³ (5-50, défaut: 20.0)
+        """
+)
 public abstract class CreateVehiculeDto {
+
+    @NotBlank(message = "Le type est obligatoire (voiture ou camion)")
+    @Schema(example = "voiture", description = "Type de véhicule: voiture ou camion")
+    private String type;
 
     @NotBlank(message = "La marque est obligatoire")
     @Size(min = 2, max = 50)

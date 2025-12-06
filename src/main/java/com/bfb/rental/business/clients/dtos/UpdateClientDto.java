@@ -1,10 +1,9 @@
-package com.bfb.rental.interfaces.dtos;
+package com.bfb.rental.business.clients.dtos;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import com.bfb.rental.business.clients.model.Client;
-import java.time.LocalDate;
 
 /**
  * JUSTIFICATION : Ajouter une méthode merge
@@ -24,7 +23,7 @@ public class UpdateClientDto {
     private String prenom;
 
     @Past
-    private LocalDate dateNaissance;
+    private String dateNaissance;
 
     @Pattern(regexp = "^[A-Z0-9]{8,15}$|^$")
     private String numPermis;

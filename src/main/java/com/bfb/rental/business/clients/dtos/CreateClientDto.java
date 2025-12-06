@@ -23,7 +23,7 @@ public class CreateClientDto {
 
     @NotNull(message = "La date de naissance est obligatoire")
     @Past(message = "La date de naissance doit être dans le passé")
-    private LocalDate dateNaissance;
+    private String dateNaissance;
 
     @NotBlank(message = "Le numéro de permis est obligatoire")
     @Pattern(regexp = "^[A-Z0-9]{8,15}$", message = "Format de permis invalide")

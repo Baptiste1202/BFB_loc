@@ -9,14 +9,17 @@ import java.util.UUID;
 import com.bfb.rental.business.clients.model.Client;
 import com.bfb.rental.infrastructures.bdd.clients.ClientsBddService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+@Service
+@RequiredArgsConstructor
 public class ClientsService {
 
     /**
      * Service d'accès à la base de données pour les clients
      */
-    protected ClientsBddService service;
+    private final ClientsBddService service;
     
     /**
      * Récupère tous les clients.

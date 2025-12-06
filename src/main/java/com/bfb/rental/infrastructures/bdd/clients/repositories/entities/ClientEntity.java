@@ -21,9 +21,11 @@ public class ClientEntity {
     @Id private String identifier;
     private String lastname;
     private String firstname;
-    private Date date_of_birth;
+    private String date_of_birth;
     private String num_permis;
     private String address;
     private Collection<VehicleEntity> vehicles;
+    private Date dateCreation;
+    private Date dateModification;
 }
 

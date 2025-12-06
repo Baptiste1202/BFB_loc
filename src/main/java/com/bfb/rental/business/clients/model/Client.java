@@ -17,7 +17,7 @@ public class Client {
     private UUID id;
     private String nom;
     private String prenom;
-    private LocalDate dateNaissance;
+    private String dateNaissance;
     private String numPermis;
     private String adresse;
     private LocalDateTime dateCreation;

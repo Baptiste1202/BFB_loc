@@ -8,7 +8,7 @@ import java.util.UUID;
 import com.bfb.rental.business.clients.ClientsService;
 import com.bfb.rental.business.clients.dtos.CreateClientDto;
 import com.bfb.rental.business.clients.model.Client;
-import com.bfb.rental.interfaces.dtos.UpdateClientDto;
+import com.bfb.rental.business.clients.dtos.UpdateClientDto;
 import com.bfb.rental.interfaces.mappers.ClientMapper;
 import com.bfb.rental.interfaces.exceptions.ResourceNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
