@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.*;
 import lombok.*;
 
@@ -37,6 +38,10 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdateVehiculeDto {
+
+    @NotBlank(message = "Le type est obligatoire (voiture ou camion)")
+    @Schema(example = "voiture", description = "Type de véhicule: voiture ou camion")
+    private String type;
 
     @Size(min = 2, max = 50, message = "La marque doit être entre 2 et 50 caractères")
     private String marque;
@@ -67,49 +72,30 @@ public class UpdateVehiculeDto {
     @DecimalMin(value = "10")
     private BigDecimal prixLocationJournalier;
 
-    /**
-     * JUSTIFICATION : état ne peut PAS être modifié directement
-     *
-     * Les changements d'état doivent passer par des endpoints spécifiques :
-     * - PATCH /vehicules/:id/panne → EN_PANNE
-     * - PATCH /vehicules/:id/reparer → DISPONIBLE
-     *
-     * Pourquoi ? Car ce sont des actions métier complexes qui ont des effets de bord :
-     * - Déclarer en panne → annule les contrats EN_ATTENTE
-     * - Réparer → génère une notification
-     *
-     * PATTERN : Command Pattern
-     * Les changements d'état = commandes spécifiques, pas des updates simples
-     */
+    public static TransportVehicle merge(final UpdateVehiculeDto dto, final TransportVehicle existing) {
 
-    /**
-     * Méthode utilitaire : vérifier si le DTO est vide
-     */
-    @JsonIgnore
-    public boolean isEmpty() {
-        return marque == null &&
-                modele == null &&
-                motorisation == null &&
-                couleur == null &&
-                dateAcquisition == null &&
-                prixLocationJournalier == null;
-    }
+        if (dto.getMarque() != null) {
+            existing.setMarque(dto.getMarque());
+        }
+        if (dto.getModele() != null) {
+            existing.setModele(dto.getModele());
+        }
+        if (dto.getMotorisation() != null) {
+            existing.setMotorisation(dto.getMotorisation());
+        }
+        if (dto.getCouleur() != null) {
+            existing.setCouleur(dto.getCouleur());
+        }
+        if (dto.getDateAcquisition() != null) {
+            existing.setDateAcquisition(dto.getDateAcquisition());
+        }
+        if (dto.getPrixLocationJournalier() != null) {
+            existing.setPrixLocationJournalier(dto.getPrixLocationJournalier());
+        }
 
-    /**
-     * Méthode utilitaire : obtenir les champs modifiés
-     */
-    @JsonIgnore
-    public List<String> getModifiedFields() {
-        List<String> fields = new ArrayList<>();
+        existing.setDateModification(LocalDateTime.now());
 
-        if (marque != null) fields.add("marque");
-        if (modele != null) fields.add("modele");
-        if (motorisation != null) fields.add("motorisation");
-        if (couleur != null) fields.add("couleur");
-        if (dateAcquisition != null) fields.add("dateAcquisition");
-        if (prixLocationJournalier != null) fields.add("prixLocationJournalier");
-
-        return fields;
+        return existing;
     }
 
 }

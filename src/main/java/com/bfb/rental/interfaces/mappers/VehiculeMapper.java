@@ -1,8 +1,7 @@
 package com.bfb.rental.interfaces.mappers;
 
 import com.bfb.rental.business.common.EtatVehicule;
-import com.bfb.rental.business.vehicles.dtos.CreateCamionDto;
-import com.bfb.rental.business.vehicles.dtos.CreateVoitureDto;
+import com.bfb.rental.business.vehicles.dtos.*;
 import com.bfb.rental.business.vehicles.model.Camion;
 import com.bfb.rental.business.vehicles.model.TransportVehicle;
 import com.bfb.rental.business.vehicles.model.Voiture;
@@ -57,6 +56,43 @@ public class VehiculeMapper {
                 .dateCreation(LocalDateTime.now())
                 .dateModification(LocalDateTime.now())
                 .build();
+    }
+
+    public TransportVehicle updateEntity(final Object dto, final TransportVehicle existing) {
+        if (dto instanceof UpdateCamionDto camionDto) {
+            return updateCamion(camionDto, (Camion) existing);
+        } else if (dto instanceof UpdateVoitureDto voitureDto) {
+            return updateVoiture(voitureDto, (Voiture) existing);
+        }
+        throw new IllegalArgumentException("DTO d'update véhicule inconnu : " + (dto == null ? "null" : dto.getClass().getName()));
+    }
+
+    public Camion updateCamion(final UpdateCamionDto dto, final Camion existing) {
+        if (dto == null) return existing;
+
+        // Merge les champs communs
+        UpdateVehiculeDto.merge(dto, existing);
+
+        // Merge les champs spécifiques au camion
+        if (dto.getVolume() != null) {
+            existing.setVolume(dto.getVolume());
+        }
+
+        return existing;
+    }
+
+    public Voiture updateVoiture(final UpdateVoitureDto dto, final Voiture existing) {
+        if (dto == null) return existing;
+
+        // Merge les champs communs
+        UpdateVehiculeDto.merge(dto, existing);
+
+        // Merge les champs spécifiques à la voiture
+        if (dto.getNombrePlaces() != null) {
+            existing.setNombrePlaces(dto.getNombrePlaces());
+        }
+
+        return existing;
     }
 
 }

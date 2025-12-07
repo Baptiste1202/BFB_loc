@@ -9,7 +9,6 @@ import com.bfb.rental.business.common.EtatVehicule;
 import lombok.Builder;
 import lombok.Setter;
 
-
 public interface TransportVehicle {
 
     UUID getId();
@@ -25,5 +24,12 @@ public interface TransportVehicle {
     LocalDateTime getDateCreation();
     LocalDateTime getDateModification();
 
+    void setMarque(String marque);
+    void setModele(String modele);
+    void setMotorisation(String motorisation);
+    void setCouleur(String couleur);
+    void setDateAcquisition(LocalDate dateAcquisition);
+    void setPrixLocationJournalier(BigDecimal prixLocationJournalier);
     void setEtat(EtatVehicule etatVehicule);
+    void setDateModification(LocalDateTime dateModification);
 }
