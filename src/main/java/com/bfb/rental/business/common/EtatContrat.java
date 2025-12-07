@@ -5,14 +5,15 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public enum EtatContrat {
-    PENDING,
     IN_PROGRESS,
+    ACTIVE,
     ENDED,
     LATE,
     CANCELED;
 
-    public static final String ACCEPTABLE_VALUES = Set.of( PENDING,
+    public static final String ACCEPTABLE_VALUES = Set.of(
             IN_PROGRESS,
+            ACTIVE,
             ENDED,
             LATE,
             CANCELED).stream().map(Enum::name).collect(Collectors.joining(", "));

@@ -8,28 +8,22 @@ import com.bfb.rental.business.vehicles.model.TransportVehicle;
 
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * Stratégie de prix basique : multiplication du prix journalier par le nombre de jours
- */
 @Slf4j
 public class BasicPricingStrategy implements PricingStrategy {
 
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(BasicPricingStrategy.class);
-
     @Override
-    public BigDecimal calculatePrice(Contrat contrat) {
+    public BigDecimal calculatePrice(Contrat contrat, TransportVehicle vehicule) {
         long nombreJours = ChronoUnit.DAYS.between(contrat.getDateDebut(), contrat.getDateFin());
-        
-        // Si c'est le même jour, c'est 1 jour de location
+
         if (nombreJours == 0) {
             nombreJours = 1;
         }
 
-        BigDecimal prixJournalier = contrat.getVehicule().getPrixLocationJournalier();
+        BigDecimal prixJournalier = vehicule.getPrixLocationJournalier();
         BigDecimal prixTotal = prixJournalier.multiply(BigDecimal.valueOf(nombreJours));
 
         log.info("Stratégie BASIQUE - Contrat: {} - Véhicule: {} - Jours: {} - Prix/jour: {} - Total: {}",
-                contrat.getId(), contrat.getVehicule().getImmatriculation(), nombreJours, prixJournalier, prixTotal);
+                contrat.getId(), vehicule.getImmatriculation(), nombreJours, prixJournalier, prixTotal);
 
         return prixTotal;
     }

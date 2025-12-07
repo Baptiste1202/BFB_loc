@@ -1,23 +1,26 @@
 package com.bfb.rental.business.vehicles;
 
+import com.bfb.rental.business.common.EtatVehicule;
+import com.bfb.rental.business.vehicles.model.TransportVehicle;
+import com.bfb.rental.infrastructures.bdd.contrats.ContratBddService;
+import com.bfb.rental.infrastructures.bdd.vehicules.VehiculeBddService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
-import com.bfb.rental.business.vehicles.model.TransportVehicle;
-import com.bfb.rental.infrastructures.bdd.vehicules.VehiculeBddService;
-import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
-
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
+@Slf4j
 public class VehicleService {
 
-    private static final org.slf4j.Logger log = org.slf4j.LoggerFactory.getLogger(VehicleService.class);
-
     private final VehiculeBddService bddService;
+    private final ContratBddService contratBddService;
 
     public Collection<TransportVehicle> getAll() {
         return Objects.requireNonNullElse(this.bddService.getAll(), Collections.emptySet());
@@ -42,5 +45,40 @@ public class VehicleService {
         log.info("Suppression du véhicule : {}", identifier);
         this.bddService.delete(identifier);
     }
-}
 
+    /**
+     * Déclare le véhicule en panne et annule les contrats PENDING
+     */
+    public TransportVehicle declarePanne(final UUID identifier) {
+        log.info("Déclaration en panne du véhicule : {}", identifier);
+
+        TransportVehicle vehicule = this.getOne(identifier)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        String.format("Le véhicule d'identifiant %s n'a pas été trouvé.", identifier)
+                ));
+
+        vehicule.setEtat(EtatVehicule.BROKE);
+        this.bddService.save(vehicule);
+
+        this.contratBddService.cancelInProgressContractsByVehicle(identifier);
+
+        return vehicule;
+    }
+
+    /**
+     * Répare le véhicule
+     */
+    public TransportVehicle repair(final UUID identifier) {
+        log.info("Réparation du véhicule : {}", identifier);
+
+        TransportVehicle vehicule = this.getOne(identifier)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        String.format("Le véhicule d'identifiant %s n'a pas été trouvé.", identifier)
+                ));
+
+        vehicule.setEtat(EtatVehicule.AVAILABLE);
+        this.bddService.save(vehicule);
+
+        return vehicule;
+    }
+}

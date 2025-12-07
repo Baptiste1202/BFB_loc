@@ -10,41 +10,36 @@ import com.bfb.rental.business.vehicles.model.TransportVehicle;
 
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * Stratégie de prix saisonnière : augmentation en haute saison (juillet, août)
- */
 @Slf4j
 public class SeasonalPricingStrategy implements PricingStrategy {
 
-    private static final BigDecimal HIGH_SEASON_MULTIPLIER = new BigDecimal("1.30"); // +30% en haute saison
+    private static final BigDecimal HIGH_SEASON_MULTIPLIER = new BigDecimal("1.30");
     private static final BigDecimal NORMAL_MULTIPLIER = new BigDecimal("1.0");
 
     @Override
-    public BigDecimal calculatePrice(Contrat contrat) {
+    public BigDecimal calculatePrice(Contrat contrat, TransportVehicle vehicule) {
         long nombreJours = ChronoUnit.DAYS.between(contrat.getDateDebut(), contrat.getDateFin());
-        
-        // Si c'est le même jour, c'est 1 jour de location
+
         if (nombreJours == 0) {
             nombreJours = 1;
         }
 
-        BigDecimal prixJournalier = contrat.getVehicule().getPrixLocationJournalier();
+        BigDecimal prixJournalier = vehicule.getPrixLocationJournalier();
         BigDecimal prixTotal = BigDecimal.ZERO;
 
-        // Calculer le prix jour par jour selon la saison
         LocalDate currentDate = contrat.getDateDebut();
         while (!currentDate.isAfter(contrat.getDateFin())) {
             Month mois = currentDate.getMonth();
-            BigDecimal multiplicateur = (mois == Month.JULY || mois == Month.AUGUST) 
-                ? HIGH_SEASON_MULTIPLIER 
-                : NORMAL_MULTIPLIER;
-            
+            BigDecimal multiplicateur = (mois == Month.JULY || mois == Month.AUGUST)
+                    ? HIGH_SEASON_MULTIPLIER
+                    : NORMAL_MULTIPLIER;
+
             prixTotal = prixTotal.add(prixJournalier.multiply(multiplicateur));
             currentDate = currentDate.plusDays(1);
         }
 
         log.info("Stratégie SAISONNIÈRE - Contrat: {} - Véhicule: {} - Jours: {} - Total: {}",
-                contrat.getId(), contrat.getVehicule().getImmatriculation(), nombreJours, prixTotal);
+                contrat.getId(), vehicule.getImmatriculation(), nombreJours, prixTotal);
 
         return prixTotal;
     }

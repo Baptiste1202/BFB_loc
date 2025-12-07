@@ -1,4 +1,4 @@
-package com.bfb.rental.business.vehicles.dtos;
+package com.bfb.rental.interfaces.dtos.vehicles;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Max;

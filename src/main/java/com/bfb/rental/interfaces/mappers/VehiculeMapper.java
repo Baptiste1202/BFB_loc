@@ -1,10 +1,10 @@
 package com.bfb.rental.interfaces.mappers;
 
 import com.bfb.rental.business.common.EtatVehicule;
-import com.bfb.rental.business.vehicles.dtos.*;
 import com.bfb.rental.business.vehicles.model.Camion;
 import com.bfb.rental.business.vehicles.model.TransportVehicle;
 import com.bfb.rental.business.vehicles.model.Voiture;
+import com.bfb.rental.interfaces.dtos.vehicles.*;
 import lombok.experimental.UtilityClass;
 
 import java.time.LocalDateTime;

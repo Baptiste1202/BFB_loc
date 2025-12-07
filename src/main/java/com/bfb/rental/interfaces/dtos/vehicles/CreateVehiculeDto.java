@@ -1,4 +1,4 @@
-package com.bfb.rental.business.vehicles.dtos;
+package com.bfb.rental.interfaces.dtos.vehicles;
 
 
 import com.bfb.rental.business.common.EtatVehicule;

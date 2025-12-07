@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.mongodb.core.index.Indexed;
 
 @Data
 @Builder
@@ -25,6 +26,7 @@ public class VehiculeEntity {
     private String modele;
     private String motorisation;
     private String couleur;
+    @Indexed(unique = true)
     private String immatriculation;
     private Date dateAcquisition;
     private String etat;

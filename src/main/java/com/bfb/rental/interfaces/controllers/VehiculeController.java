@@ -5,11 +5,10 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.UUID;
 
-import com.bfb.rental.business.common.EtatVehicule;
 import com.bfb.rental.business.vehicles.VehicleService;
-import com.bfb.rental.business.vehicles.dtos.CreateVehiculeDto;
+import com.bfb.rental.interfaces.dtos.vehicles.CreateVehiculeDto;
 import com.bfb.rental.business.vehicles.model.TransportVehicle;
-import com.bfb.rental.business.vehicles.dtos.UpdateVehiculeDto;
+import com.bfb.rental.interfaces.dtos.vehicles.UpdateVehiculeDto;
 import com.bfb.rental.interfaces.exceptions.ResourceNotFoundException;
 import com.bfb.rental.interfaces.mappers.VehiculeMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -82,19 +81,10 @@ public class VehiculeController {
 
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping(value = "/{idVehicule}/panne", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Déclare un véhicule en panne")
+    @Operation(summary = "Déclare un véhicule en panne et annule les contrats PENDING")
     public TransportVehicle declarePanne(@PathVariable("idVehicule") final String identifier) {
         log.info("Déclaration en panne du véhicule : {}", identifier);
-
-        TransportVehicle vehicule = this.service.getOne(UUID.fromString(identifier))
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format("Le véhicule d'identifiant %s n'a pas été trouvé.", identifier)
-                ));
-
-        vehicule.setEtat(EtatVehicule.BROKE);
-        this.service.update(vehicule);
-
-        return vehicule;
+        return this.service.declarePanne(UUID.fromString(identifier));
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -102,15 +92,6 @@ public class VehiculeController {
     @Operation(summary = "Répare un véhicule")
     public TransportVehicle repair(@PathVariable("idVehicule") final String identifier) {
         log.info("Réparation du véhicule : {}", identifier);
-
-        TransportVehicle vehicule = this.service.getOne(UUID.fromString(identifier))
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format("Le véhicule d'identifiant %s n'a pas été trouvé.", identifier)
-                ));
-
-        vehicule.setEtat(EtatVehicule.AVAILABLE);
-        this.service.update(vehicule);
-
-        return vehicule;
+        return this.service.repair(UUID.fromString(identifier));
     }
 }

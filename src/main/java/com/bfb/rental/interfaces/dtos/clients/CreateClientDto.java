@@ -1,12 +1,10 @@
-package com.bfb.rental.business.clients.dtos;
+package com.bfb.rental.interfaces.dtos.clients;
 
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor

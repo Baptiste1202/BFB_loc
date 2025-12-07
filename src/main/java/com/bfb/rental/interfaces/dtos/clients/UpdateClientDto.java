@@ -1,4 +1,4 @@
-package com.bfb.rental.business.clients.dtos;
+package com.bfb.rental.interfaces.dtos.clients;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;

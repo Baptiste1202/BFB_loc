@@ -1,6 +1,7 @@
 package com.bfb.rental.infrastructures.bdd.contrats.repositories.entities;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 import org.springframework.data.annotation.Id;
@@ -23,13 +24,17 @@ public class ContratEntity {
 
     private String clientId;
     private String vehiculeId;
-    private Date dateDebut;
-    private Date dateFin;
+
+    private LocalDate dateDebut;
+    private LocalDate dateFin;
+
     private String etat;
     private BigDecimal montantTotal;
-    private Date dateRetourReel;
+
+    private LocalDate dateRetourReel;
     private BigDecimal penaliteRetard;
     private String motifAnnulation;
+
     private Date dateCreation;
     private Date dateModification;
 }

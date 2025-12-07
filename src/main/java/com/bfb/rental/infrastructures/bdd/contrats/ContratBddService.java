@@ -1,5 +1,7 @@
 package com.bfb.rental.infrastructures.bdd.contrats;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
@@ -7,6 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import com.bfb.rental.business.common.EtatContrat;
 import org.springframework.stereotype.Service;
 
 import com.bfb.rental.business.contrats.model.Contrat;
@@ -55,5 +58,30 @@ public class ContratBddService {
         Optional.ofNullable(identifier)
                 .map(UUID::toString)
                 .ifPresent(this.repository::deleteById);
+    }
+
+    public Collection<Contrat> findConflictingContracts(final UUID vehiculeId, final LocalDate dateDebut, final LocalDate dateFin) {
+        return this.repository.findConflictingContracts(vehiculeId.toString(), dateDebut, dateFin)
+                .stream()
+                .map(this.mapper::from)
+                .toList();
+    }
+    public void cancelInProgressContractsByVehicle(final UUID vehiculeId) {
+
+        Collection<Contrat> pending = this.findInProgressByVehicule(vehiculeId);
+
+        for (Contrat contrat : pending) {
+            contrat.setEtat(EtatContrat.CANCELED);
+            contrat.setMotifAnnulation("Véhicule déclaré en panne");
+            contrat.setDateModification(LocalDateTime.now());
+            this.save(contrat);
+        }
+    }
+
+    private Collection<Contrat> findInProgressByVehicule(final UUID vehiculeId) {
+        return this.repository.findInProgressByVehicule(vehiculeId.toString())
+                .stream()
+                .map(this.mapper::from)
+                .toList();
     }
 }

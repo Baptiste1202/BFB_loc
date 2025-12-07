@@ -1,16 +1,11 @@
-package com.bfb.rental.business.vehicles.dtos;
+package com.bfb.rental.interfaces.dtos.vehicles;
 
 import com.bfb.rental.business.common.EtatVehicule;
-import com.bfb.rental.business.contrats.model.Contrat;
-import com.bfb.rental.business.contrats.dtos.UpdateContratDto;
 import com.bfb.rental.business.vehicles.model.TransportVehicle;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

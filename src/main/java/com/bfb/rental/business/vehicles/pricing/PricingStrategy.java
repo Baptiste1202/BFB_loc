@@ -15,12 +15,7 @@ public interface PricingStrategy {
      * @param contrat le contrat de location
      * @return le prix total calculé
      */
-    BigDecimal calculatePrice(Contrat contrat);
+    BigDecimal calculatePrice(Contrat contrat, TransportVehicle vehicule);
 
-    /**
-     * Retourne le nom de la stratégie
-     *
-     * @return le nom de la stratégie
-     */
     String getStrategyName();
 }

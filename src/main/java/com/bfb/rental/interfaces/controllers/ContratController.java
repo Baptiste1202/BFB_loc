@@ -1,28 +1,25 @@
 package com.bfb.rental.interfaces.controllers;
 
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.UUID;
 
-import com.bfb.rental.business.common.EtatContrat;
 import com.bfb.rental.business.contrats.ContratsService;
-import com.bfb.rental.business.contrats.dtos.CreateContratDto;
-import com.bfb.rental.business.contrats.dtos.UpdateContratDto;
+import com.bfb.rental.interfaces.dtos.contrats.CreateContratDto;
+import com.bfb.rental.interfaces.dtos.contrats.UpdateContratDto;
 import com.bfb.rental.business.contrats.model.Contrat;
 import com.bfb.rental.interfaces.exceptions.ResourceNotFoundException;
-import com.bfb.rental.interfaces.mappers.ContratMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/api/imt/v1/contrats")
 @Tag(name = "Contrats", description = "Gestion des contrats de location")
 @Slf4j
@@ -42,7 +39,7 @@ public class ContratController {
     @Operation(summary = "Crée un nouveau contrat")
     public Contrat create(@RequestBody final CreateContratDto input) {
         log.info("Création d'un nouveau contrat");
-        return this.service.create(ContratMapper.toEntity(input));
+        return this.service.create(input);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -55,22 +52,15 @@ public class ContratController {
                 ));
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PatchMapping(value = "/{idContrat}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Modifie un contrat")
-    public void update(
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping(value = "/{idContrat}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Modifie un contrat (change état, dates, pénalité, motif)")
+    public Contrat update(
             @PathVariable("idContrat") final String identifier,
             @RequestBody final UpdateContratDto input
     ) {
         log.info("Modification du contrat : {}", identifier);
-
-        Contrat existing = this.service.getOne(UUID.fromString(identifier))
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format("Le contrat d'identifiant %s n'a pas été trouvé.", identifier)
-                ));
-
-        Contrat updated = UpdateContratDto.merge(input, existing);
-        this.service.update(updated);
+        return this.service.update(UUID.fromString(identifier), input);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -79,68 +69,5 @@ public class ContratController {
     public void delete(@PathVariable("idContrat") final String identifier) {
         log.info("Suppression du contrat : {}", identifier);
         this.service.delete(UUID.fromString(identifier));
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @PatchMapping(value = "/{idContrat}/initier", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Initie un contrat")
-    public Contrat initiate(@PathVariable("idContrat") final String identifier) {
-        log.info("Initiation du contrat : {}", identifier);
-
-        Contrat contrat = this.service.getOne(UUID.fromString(identifier))
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format("Le contrat d'identifiant %s n'a pas été trouvé.", identifier)
-                ));
-
-        contrat.setEtat(EtatContrat.IN_PROGRESS);
-        this.service.update(contrat);
-
-        return contrat;
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @PatchMapping(value = "/{idContrat}/terminer", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Termine un contrat")
-    public Contrat terminate(
-            @PathVariable("idContrat") final String identifier,
-            @RequestParam(required = false) final LocalDate dateRetour
-    ) {
-        log.info("Terminaison du contrat : {} - date retour: {}", identifier, dateRetour);
-
-        Contrat contrat = this.service.getOne(UUID.fromString(identifier))
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format("Le contrat d'identifiant %s n'a pas été trouvé.", identifier)
-                ));
-
-        LocalDate returnDate = dateRetour != null ? dateRetour : LocalDate.now();
-        boolean isLate = returnDate.isAfter(contrat.getDateFin());
-        EtatContrat newState = isLate ? EtatContrat.LATE : EtatContrat.ENDED;
-
-        contrat.setEtat(newState);
-        contrat.setDateRetourReel(returnDate);
-        this.service.update(contrat);
-
-        return contrat;
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @PatchMapping(value = "/{idContrat}/annuler", produces = MediaType.APPLICATION_JSON_VALUE)
-    @Operation(summary = "Annule un contrat")
-    public Contrat cancel(
-            @PathVariable("idContrat") final String identifier,
-            @RequestParam(required = false) final String motif
-    ) {
-        log.info("Annulation du contrat : {} - motif: {}", identifier, motif);
-
-        Contrat contrat = this.service.getOne(UUID.fromString(identifier))
-                .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format("Le contrat d'identifiant %s n'a pas été trouvé.", identifier)
-                ));
-
-        contrat.setEtat(EtatContrat.CANCELED);
-        contrat.setMotifAnnulation(motif);
-        this.service.update(contrat);
-
-        return contrat;
     }
 }

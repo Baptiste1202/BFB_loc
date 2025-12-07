@@ -1,6 +1,6 @@
 package com.bfb.rental.interfaces.mappers;
 import com.bfb.rental.business.clients.model.Client;
-import com.bfb.rental.business.clients.dtos.CreateClientDto;
+import com.bfb.rental.interfaces.dtos.clients.CreateClientDto;
 import lombok.experimental.UtilityClass;
 
 import java.time.LocalDateTime;

@@ -7,58 +7,34 @@ import org.springframework.stereotype.Service;
 import com.bfb.rental.business.contrats.model.Contrat;
 import com.bfb.rental.business.vehicles.model.TransportVehicle;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-/**
- * Service pour le calcul des prix de location avec les différentes stratégies
- */
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class PricingService {
 
     private final PricingStrategyFactory strategyFactory;
 
-    public PricingService(PricingStrategyFactory strategyFactory) {
-        this.strategyFactory = strategyFactory;
-    }
-
     /**
-     * Calcule le prix de location d'un contrat avec une stratégie spécifique
-     *
-     * @param contrat       le contrat de location
-     * @param strategyName  le nom de la stratégie à utiliser
-     * @return le prix total calculé
+     * Calcule le prix avec une stratégie spécifique
      */
-    public BigDecimal calculateContractPrice(Contrat contrat, String strategyName) {
-        if (contrat.getVehicule() == null) {
-            throw new IllegalArgumentException("Véhicule non présent dans le contrat");
+    public BigDecimal calculatePrice(Contrat contrat, TransportVehicle vehicule, String strategyName) {
+        if (vehicule == null) {
+            throw new IllegalArgumentException("Véhicule obligatoire");
         }
         PricingStrategy strategy = strategyFactory.createStrategy(strategyName);
-        return calculateContractPrice(contrat, strategy);
+        return strategy.calculatePrice(contrat, vehicule);
     }
 
     /**
-     * Calcule le prix de location d'un contrat avec une stratégie fournie
-     *
-     * @param contrat   le contrat de location
-     * @param vehicle   le véhicule à louer
-     * @param strategy  la stratégie à utiliser
-     * @return le prix total calculé
+     * Calcule le prix avec la stratégie par défaut
      */
-    public BigDecimal calculateContractPrice(Contrat contrat, PricingStrategy strategy) {
-        return strategy.calculatePrice(contrat);
-    }
-
-    /**
-     * Calcule le prix de location d'un contrat avec la stratégie par défaut
-     *
-     * @param contrat le contrat de location
-     * @return le prix total calculé
-     */
-    public BigDecimal calculateDefaultContractPrice(Contrat contrat) {
-        if (contrat.getVehicule() == null) {
-            throw new IllegalArgumentException("Véhicule non présent dans le contrat");
+    public BigDecimal calculateDefaultPrice(Contrat contrat, TransportVehicle vehicule) {
+        if (vehicule == null) {
+            throw new IllegalArgumentException("Véhicule obligatoire");
         }
-        return calculateContractPrice(contrat, strategyFactory.getDefaultStrategy());
+        return strategyFactory.getDefaultStrategy().calculatePrice(contrat, vehicule);
     }
 }
