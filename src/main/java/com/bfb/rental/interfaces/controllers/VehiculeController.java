@@ -100,7 +100,7 @@ public class VehiculeController {
     @ResponseStatus(HttpStatus.OK)
     @PatchMapping(value = "/{idVehicule}/reparer", produces = MediaType.APPLICATION_JSON_VALUE)
     @Operation(summary = "Répare un véhicule")
-    public TransportVehicle repair(@PathVariable("idTransportVehicle") final String identifier) {
+    public TransportVehicle repair(@PathVariable("idVehicule") final String identifier) {
         log.info("Réparation du véhicule : {}", identifier);
 
         TransportVehicle vehicule = this.service.getOne(UUID.fromString(identifier))

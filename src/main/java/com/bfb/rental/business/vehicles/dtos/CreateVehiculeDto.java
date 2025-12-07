@@ -1,6 +1,7 @@
 package com.bfb.rental.business.vehicles.dtos;
 
 
+import com.bfb.rental.business.common.EtatVehicule;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -68,4 +69,10 @@ public abstract class CreateVehiculeDto {
     @DecimalMax(value = "10000.00", message = "Le prix ne peut pas dépasser 10000€")
     @DecimalMin(value = "10.00", message = "Le prix doit être au minimum 10€")
     private BigDecimal prixLocationJournalier;
+
+    @Schema(
+            example = "AVAILABLE",
+            description = "État initial du véhicule (AVAILABLE, RENTED, BROKE). Défaut: AVAILABLE"
+    )
+    private EtatVehicule etat;
 }

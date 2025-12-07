@@ -1,5 +1,7 @@
 package com.bfb.rental.business.common;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -26,15 +28,6 @@ public enum EtatVehicule {
     public static final String ACCEPTABLE_VALUES = Set.of(AVAILABLE, RENTED, BROKE).stream().map(Enum::name).collect(Collectors.joining(", "));
 
     /**
-     * Convertit une chaîne en GenreEnum, retourne INCONNU si la valeur n'est pas reconnue.
-     *
-     * @param name le nom du genre
-     * @return l'énumération correspondante ou INCONNU
-     */
-    public static EtatVehicule fromOrDefault(final String name) {
-        return EtatVehicule.from(name).orElse(EtatVehicule.AVAILABLE);
-    }
-    /**
      * Convertit une chaîne en VehicleStateEnum de manière sécurisée.
      *
      * @param name le nom de l'état
@@ -47,6 +40,14 @@ public enum EtatVehicule {
         } catch (final IllegalArgumentException e) {
             return Optional.empty();
         }
+    }
+
+    @JsonCreator
+    public static EtatVehicule fromJson(final String value) {
+        return EtatVehicule.from(value)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        String.format("État invalide: '%s'. Valeurs acceptées: %s", value, ACCEPTABLE_VALUES)
+                ));
     }
 }
     

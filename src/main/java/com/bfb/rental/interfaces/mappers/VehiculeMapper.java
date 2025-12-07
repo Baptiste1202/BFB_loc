@@ -34,7 +34,7 @@ public class VehiculeMapper {
                 .dateAcquisition(dto.getDateAcquisition())
                 .prixLocationJournalier(dto.getPrixLocationJournalier())
                 .volume(dto.getVolume())
-                .etat(EtatVehicule.AVAILABLE)
+                .etat(dto.getEtat() != null ? dto.getEtat() : EtatVehicule.AVAILABLE)
                 .dateCreation(LocalDateTime.now())
                 .dateModification(LocalDateTime.now())
                 .build();
@@ -52,7 +52,7 @@ public class VehiculeMapper {
                 .dateAcquisition(dto.getDateAcquisition())
                 .prixLocationJournalier(dto.getPrixLocationJournalier())
                 .nombrePlaces(dto.getNombrePlaces())
-                .etat(EtatVehicule.AVAILABLE)
+                .etat(dto.getEtat() != null ? dto.getEtat() : EtatVehicule.AVAILABLE)
                 .dateCreation(LocalDateTime.now())
                 .dateModification(LocalDateTime.now())
                 .build();
