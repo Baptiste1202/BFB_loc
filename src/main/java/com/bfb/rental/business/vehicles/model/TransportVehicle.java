@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 import com.bfb.rental.business.common.EtatVehicule;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.Setter;
 
@@ -24,6 +26,7 @@ public interface TransportVehicle {
     LocalDateTime getDateCreation();
     LocalDateTime getDateModification();
 
+    void setId(UUID uuid);
     void setMarque(String marque);
     void setModele(String modele);
     void setMotorisation(String motorisation);
@@ -31,5 +34,7 @@ public interface TransportVehicle {
     void setDateAcquisition(LocalDate dateAcquisition);
     void setPrixLocationJournalier(BigDecimal prixLocationJournalier);
     void setEtat(EtatVehicule etatVehicule);
+    void setDateCreation(LocalDateTime now);
     void setDateModification(LocalDateTime dateModification);
+    void setImmatriculation(@NotBlank(message = "L'immatriculation est obligatoire") @Pattern(regexp = "^[A-Z0-9]{4,10}$", message = "Format d'immatriculation invalide") String immatriculation);
 }

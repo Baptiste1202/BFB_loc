@@ -1,13 +1,19 @@
 package com.bfb.rental.interfaces.controllers;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.UUID;
 
 import com.bfb.rental.business.vehicles.VehicleService;
+import com.bfb.rental.business.vehicles.dtos.CreateVehiculeDto;
+import com.bfb.rental.business.vehicles.factories.VehicleFactory;
+import com.bfb.rental.business.vehicles.model.Camion;
 import com.bfb.rental.interfaces.dtos.vehicles.CreateVehiculeDto;
 import com.bfb.rental.business.vehicles.model.TransportVehicle;
+import com.bfb.rental.business.vehicles.dtos.UpdateVehiculeDto;
+import com.bfb.rental.business.vehicles.model.Voiture;
 import com.bfb.rental.interfaces.dtos.vehicles.UpdateVehiculeDto;
 import com.bfb.rental.interfaces.exceptions.ResourceNotFoundException;
 import com.bfb.rental.interfaces.mappers.VehiculeMapper;
@@ -27,6 +33,7 @@ import org.springframework.web.bind.annotation.*;
 public class VehiculeController {
 
     private final VehicleService service;
+    private final VehicleFactory factory;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -40,7 +47,8 @@ public class VehiculeController {
     @Operation(summary = "Crée un nouveau véhicule")
     public TransportVehicle create(@RequestBody final CreateVehiculeDto input) {
         log.info("Création d'un nouveau véhicule : {} {}", input.getMarque(), input.getModele());
-        return this.service.create(VehiculeMapper.toEntity(input));
+        TransportVehicle vehicle = this.factory.createVehicle(input);
+        return this.service.create(vehicle);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -67,8 +75,8 @@ public class VehiculeController {
                         String.format("Le véhicule d'identifiant %s n'a pas été trouvé.", identifier)
                 ));
 
-        TransportVehicle updated = VehiculeMapper.updateEntity(input, existing);
-        this.service.update(updated);
+        TransportVehicle updated = UpdateVehiculeDto.merge(input, existing);
+        this.service.update(existing);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -93,5 +101,16 @@ public class VehiculeController {
     public TransportVehicle repair(@PathVariable("idVehicule") final String identifier) {
         log.info("Réparation du véhicule : {}", identifier);
         return this.service.repair(UUID.fromString(identifier));
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "/type/{type}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @Operation(summary = "Récupère tous les véhicules d'un type spécifique")
+    public Collection<TransportVehicle> getByType(@PathVariable("type") final String type) {
+        log.info("Récupération des véhicules de type : {}", type);
+
+        return this.service.getAll().stream()
+                .filter(v -> v.getType().equalsIgnoreCase(type))
+                .toList();
     }
 }

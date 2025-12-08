@@ -2,13 +2,18 @@ package com.bfb.rental.validateur;
 
 import java.util.List;
 
+import com.bfb.rental.business.contrats.model.Contrat;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Contract;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ContratValidationService {
 
-    private final Validator<Contract> validatorChain;
+    private final Validator<Contrat> validatorChain;
 
-    public ContratValidationService(List<Validator<Contract>> validators) {
+    @Autowired
+    public ContratValidationService(List<Validator<Contrat>> validators) {
 
         // On les récupère dans l'ordre défini par @Order
         for (int i = 0; i < validators.size() - 1; i++) {
@@ -18,7 +23,7 @@ public class ContratValidationService {
         this.validatorChain = validators.isEmpty() ? null : validators.get(0);
     }
 
-    public void validate(Contract contract) {
+    public void validate(Contrat contract) {
         if (validatorChain != null) {
             validatorChain.validate(contract);
         }

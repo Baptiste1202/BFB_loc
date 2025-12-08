@@ -75,4 +75,10 @@ public abstract class CreateVehiculeDto {
             description = "État initial du véhicule (AVAILABLE, RENTED, BROKE). Défaut: AVAILABLE"
     )
     private EtatVehicule etat;
+
+    // Propriétés spécifiques Voiture
+    private Integer nombrePlaces;
+
+    // Propriétés spécifiques Camion
+    private Double volume;
 }

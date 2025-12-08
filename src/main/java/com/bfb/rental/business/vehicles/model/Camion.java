@@ -1,6 +1,7 @@
 package com.bfb.rental.business.vehicles.model;
 
 import com.bfb.rental.business.common.EtatVehicule;
+import com.bfb.rental.business.common.VehicleType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,7 +37,7 @@ public class Camion implements TransportVehicle {
 
     @Override
     public String getType() {
-        return "CAMION";
+        return VehicleType.CAMION.name();
     }
 
     @Override

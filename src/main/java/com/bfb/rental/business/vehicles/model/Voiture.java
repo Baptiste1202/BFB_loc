@@ -7,6 +7,7 @@ import java.util.UUID;
 
 import com.bfb.rental.business.common.EtatVehicule;
 
+import com.bfb.rental.business.common.VehicleType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -32,7 +33,7 @@ public class Voiture implements TransportVehicle {
 
     @Override
     public String getType() {
-        return "VOITURE";
+        return VehicleType.VOITURE.name();
     }
 
     @Override

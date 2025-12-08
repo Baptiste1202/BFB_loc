@@ -1,7 +1,12 @@
 package com.bfb.rental.interfaces.dtos.vehicles;
 
 import com.bfb.rental.business.common.EtatVehicule;
+import com.bfb.rental.business.contrats.model.Contrat;
+import com.bfb.rental.business.contrats.dtos.UpdateContratDto;
+import com.bfb.rental.business.vehicles.model.Camion;
 import com.bfb.rental.business.vehicles.model.TransportVehicle;
+import com.bfb.rental.business.vehicles.model.Voiture;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -90,7 +95,10 @@ public class UpdateVehiculeDto {
     )
     private EtatVehicule etat;
 
-    public static TransportVehicle merge(final UpdateVehiculeDto dto, final TransportVehicle existing) {
+    private Integer nombrePlaces;
+    private Double volume;
+
+    public static TransportVehicle merge(UpdateVehiculeDto dto, TransportVehicle existing) {
 
         if (dto.getMarque() != null) {
             existing.setMarque(dto.getMarque());
@@ -104,15 +112,21 @@ public class UpdateVehiculeDto {
         if (dto.getCouleur() != null) {
             existing.setCouleur(dto.getCouleur());
         }
-        if (dto.getDateAcquisition() != null) {
-            existing.setDateAcquisition(dto.getDateAcquisition());
-        }
         if (dto.getPrixLocationJournalier() != null) {
             existing.setPrixLocationJournalier(dto.getPrixLocationJournalier());
         }
         if (dto.getEtat() != null) {
             existing.setEtat(dto.getEtat());
         }
+
+        // Mise à jour des propriétés spécifiques selon le type
+        if (existing instanceof Voiture voiture && dto.getNombrePlaces() != null) {
+            voiture.setNombrePlaces(dto.getNombrePlaces());
+        } else if (existing instanceof Camion camion && dto.getVolume() != null) {
+            camion.setVolume(dto.getVolume());
+        }
+
+        // Mise à jour de la date de modification
         existing.setDateModification(LocalDateTime.now());
 
         return existing;
