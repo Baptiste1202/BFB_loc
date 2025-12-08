@@ -80,8 +80,8 @@ public class ContratsService {
             );
         }
 
-        Contrat contrat = ContratMapper.toEntity(input);
-        return this.bddService.save(contrat);
+
+        return this.bddService.save(input);
     }
 
     public Contrat update(final UUID identifier, final UpdateContratDto input) {
