@@ -1,22 +1,15 @@
 package com.bfb.rental.interfaces.controllers;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.UUID;
-
 import com.bfb.rental.business.vehicles.VehicleService;
-import com.bfb.rental.business.vehicles.dtos.CreateVehiculeDto;
 import com.bfb.rental.business.vehicles.factories.VehicleFactory;
-import com.bfb.rental.business.vehicles.model.Camion;
 import com.bfb.rental.interfaces.dtos.vehicles.CreateVehiculeDto;
 import com.bfb.rental.business.vehicles.model.TransportVehicle;
-import com.bfb.rental.business.vehicles.dtos.UpdateVehiculeDto;
-import com.bfb.rental.business.vehicles.model.Voiture;
 import com.bfb.rental.interfaces.dtos.vehicles.UpdateVehiculeDto;
 import com.bfb.rental.interfaces.exceptions.ResourceNotFoundException;
-import com.bfb.rental.interfaces.mappers.VehiculeMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -47,7 +40,7 @@ public class VehiculeController {
     @Operation(summary = "Crée un nouveau véhicule")
     public TransportVehicle create(@RequestBody final CreateVehiculeDto input) {
         log.info("Création d'un nouveau véhicule : {} {}", input.getMarque(), input.getModele());
-        TransportVehicle vehicle = this.factory.createVehicle(input);
+        TransportVehicle vehicle = this.factory.createVehicle(input.getType());
         return this.service.create(vehicle);
     }
 

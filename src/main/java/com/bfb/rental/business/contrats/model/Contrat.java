@@ -17,8 +17,8 @@ import java.util.UUID;
 @Builder
 public class Contrat {
     private UUID id;
-    private UUID clientId;
-    private UUID vehiculeId;
+    private Client client;
+    private TransportVehicle vehicule;
     private LocalDate dateDebut;
     private LocalDate dateFin;
     private EtatContrat etat;
@@ -33,13 +33,13 @@ public class Contrat {
     public Contrat() {
     }
 
-    public Contrat(UUID id, UUID clientId, UUID vehiculeId, LocalDate dateDebut, LocalDate dateFin,
+    public Contrat(UUID id, Client client, TransportVehicle vehicule, LocalDate dateDebut, LocalDate dateFin,
                    EtatContrat etat, BigDecimal montantTotal, LocalDate dateRetourReel,
                    BigDecimal penaliteRetard, String motifAnnulation, LocalDateTime dateCreation,
                    LocalDateTime dateModification) {
         this.id = id;
-        this.clientId = clientId;
-        this.vehiculeId = vehiculeId;
+        this.client = client;
+        this.vehicule = vehicule;
         this.dateDebut = dateDebut;
         this.dateFin = dateFin;
         this.etat = etat;

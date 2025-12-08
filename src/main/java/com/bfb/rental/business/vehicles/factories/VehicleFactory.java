@@ -2,10 +2,10 @@ package com.bfb.rental.business.vehicles.factories;
 
 import com.bfb.rental.business.common.EtatVehicule;
 import com.bfb.rental.business.common.VehicleType;
-import com.bfb.rental.business.vehicles.dtos.CreateVehiculeDto;
 import com.bfb.rental.business.vehicles.model.Camion;
 import com.bfb.rental.business.vehicles.model.TransportVehicle;
 import com.bfb.rental.business.vehicles.model.Voiture;
+import com.bfb.rental.interfaces.dtos.vehicles.CreateVehiculeDto;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -25,17 +25,10 @@ public class VehicleFactory {
      * @return une instance du véhicule correspondant
      * @throws IllegalArgumentException si le type est inconnu
      */
-    public TransportVehicle createVehicle(String type) {
+    public TransportVehicle createVehicle(VehicleType type) {
         VehicleType vehicleType;
 
-        try {
-            vehicleType = VehicleType.valueOf(type.toUpperCase());
-        } catch (IllegalArgumentException e) {
-            log.error("Type de véhicule inconnu: {}", type);
-            throw new IllegalArgumentException("Type de véhicule invalide: " + type);
-        }
-
-        TransportVehicle vehicle = switch (vehicleType) {
+        TransportVehicle vehicle = switch (type) {
             case VOITURE -> {
                 log.info("Création d'une nouvelle voiture");
                 yield new Voiture();

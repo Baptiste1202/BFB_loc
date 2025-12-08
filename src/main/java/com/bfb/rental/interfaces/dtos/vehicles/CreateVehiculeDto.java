@@ -2,6 +2,7 @@ package com.bfb.rental.interfaces.dtos.vehicles;
 
 
 import com.bfb.rental.business.common.EtatVehicule;
+import com.bfb.rental.business.common.VehicleType;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -38,7 +39,7 @@ public abstract class CreateVehiculeDto {
 
     @NotBlank(message = "Le type est obligatoire (voiture ou camion)")
     @Schema(example = "voiture", description = "Type de véhicule: voiture ou camion")
-    private String type;
+    private VehicleType type;
 
     @NotBlank(message = "La marque est obligatoire")
     @Size(min = 2, max = 50)

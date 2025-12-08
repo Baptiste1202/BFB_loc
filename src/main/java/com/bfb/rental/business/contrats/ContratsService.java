@@ -3,7 +3,6 @@ package com.bfb.rental.business.contrats;
 import com.bfb.rental.business.clients.ClientsService;
 import com.bfb.rental.business.common.EtatContrat;
 import com.bfb.rental.business.common.EtatVehicule;
-import com.bfb.rental.interfaces.dtos.contrats.CreateContratDto;
 import com.bfb.rental.interfaces.dtos.contrats.UpdateContratDto;
 import com.bfb.rental.business.contrats.model.Contrat;
 import com.bfb.rental.business.vehicles.VehicleService;
@@ -11,6 +10,7 @@ import com.bfb.rental.business.vehicles.model.TransportVehicle;
 import com.bfb.rental.infrastructures.bdd.contrats.ContratBddService;
 import com.bfb.rental.interfaces.exceptions.ResourceNotFoundException;
 import com.bfb.rental.interfaces.mappers.ContratMapper;
+import com.bfb.rental.validateur.ContratValidationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -32,6 +32,7 @@ public class ContratsService {
     private final ContratBddService bddService;
     private final ClientsService clientService;
     private final VehicleService vehicleService;
+    private final ContratValidationService validationService;
 
     public Collection<Contrat> getAll() {
         return Objects.requireNonNullElse(this.bddService.getAll(), Collections.emptySet());
@@ -44,17 +45,17 @@ public class ContratsService {
     /**
      * Crée un contrat avec validations
      */
-    public Contrat create(final CreateContratDto input) {
+    public Contrat create(final Contrat input) {
         log.info("Création d'un nouveau contrat");
 
-        this.clientService.getOne(input.getClientId())
+        this.clientService.getOne(input.getClient().getId())
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format("Client %s non trouvé", input.getClientId())
+                        String.format("Client %s non trouvé", input.getClient())
                 ));
 
-        TransportVehicle vehicule = this.vehicleService.getOne(input.getVehiculeId())
+        TransportVehicle vehicule = this.vehicleService.getOne(input.getVehicule().getId())
                 .orElseThrow(() -> new ResourceNotFoundException(
-                        String.format("Véhicule %s non trouvé", input.getVehiculeId())
+                        String.format("Véhicule %s non trouvé", input.getVehicule())
                 ));
 
         if (vehicule.getEtat() == EtatVehicule.BROKE) {
@@ -65,7 +66,7 @@ public class ContratsService {
         }
 
         Collection<Contrat> conflicts = this.bddService.findConflictingContracts(
-                input.getVehiculeId(),
+                input.getVehicule().getId(),
                 input.getDateDebut(),
                 input.getDateFin()
         );
@@ -100,6 +101,8 @@ public class ContratsService {
             log.info("Contrat {} en retard", identifier);
         }
 
+        this.validationService.validate(existing);
+
         return this.bddService.save(existing);
     }
 
@@ -115,7 +118,7 @@ public class ContratsService {
         log.info("Annulation des contrats PENDING pour le véhicule : {}", vehiculeId);
 
         for (Contrat contrat : this.getAll()) {
-            if (contrat.getVehiculeId().equals(vehiculeId) && contrat.getEtat() == EtatContrat.IN_PROGRESS) {
+            if (contrat.getVehicule().equals(vehiculeId) && contrat.getEtat() == EtatContrat.IN_PROGRESS) {
                 contrat.setEtat(EtatContrat.CANCELED);
                 contrat.setMotifAnnulation("Véhicule déclaré en panne");
                 contrat.setDateModification(LocalDateTime.now());

@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
 
+import com.bfb.rental.business.clients.model.Client;
+import com.bfb.rental.business.vehicles.model.TransportVehicle;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -22,8 +24,8 @@ public class ContratEntity {
     @Id
     private String identifier;
 
-    private String clientId;
-    private String vehiculeId;
+    private Client client;
+    private TransportVehicle vehicule;
 
     private LocalDate dateDebut;
     private LocalDate dateFin;

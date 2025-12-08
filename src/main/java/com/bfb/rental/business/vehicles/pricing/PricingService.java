@@ -5,7 +5,6 @@ import java.math.BigDecimal;
 import org.springframework.stereotype.Service;
 
 import com.bfb.rental.business.contrats.model.Contrat;
-import com.bfb.rental.business.vehicles.model.TransportVehicle;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,23 +17,28 @@ public class PricingService {
     private final PricingStrategyFactory strategyFactory;
 
     /**
-     * Calcule le prix avec une stratégie spécifique
+     * Calcule le prix de location d'un contrat avec une stratégie spécifique
+     *
+     * @param contrat       le contrat de location
+     * @param strategyName  le nom de la stratégie à utiliser
+     * @return le prix total calculé
      */
-    public BigDecimal calculatePrice(Contrat contrat, TransportVehicle vehicule, String strategyName) {
-        if (vehicule == null) {
-            throw new IllegalArgumentException("Véhicule obligatoire");
+    public BigDecimal calculateContractPrice(Contrat contrat, String strategyName) {
+        if (contrat.getVehicule() == null) {
+            throw new IllegalArgumentException("Véhicule non présent dans le contrat");
         }
         PricingStrategy strategy = strategyFactory.createStrategy(strategyName);
-        return strategy.calculatePrice(contrat, vehicule);
+        return calculateContractPrice(contrat, strategy);
     }
 
     /**
-     * Calcule le prix avec la stratégie par défaut
+     * Calcule le prix de location d'un contrat avec une stratégie fournie
+     *
+     * @param contrat   le contrat de location
+     * @param strategy  la stratégie à utiliser
+     * @return le prix total calculé
      */
-    public BigDecimal calculateDefaultPrice(Contrat contrat, TransportVehicle vehicule) {
-        if (vehicule == null) {
-            throw new IllegalArgumentException("Véhicule obligatoire");
-        }
-        return strategyFactory.getDefaultStrategy().calculatePrice(contrat, vehicule);
+    public BigDecimal calculateContractPrice(Contrat contrat, PricingStrategy strategy) {
+        return strategy.calculatePrice(contrat);
     }
 }

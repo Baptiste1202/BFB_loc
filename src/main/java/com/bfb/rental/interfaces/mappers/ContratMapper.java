@@ -1,8 +1,8 @@
 package com.bfb.rental.interfaces.mappers;
 
 import com.bfb.rental.business.common.EtatContrat;
-import com.bfb.rental.interfaces.dtos.contrats.CreateContratDto;
 import com.bfb.rental.business.contrats.model.Contrat;
+import com.bfb.rental.interfaces.dtos.contrats.CreateContratDto;
 import lombok.experimental.UtilityClass;
 
 import java.time.LocalDateTime;
@@ -16,8 +16,8 @@ public class ContratMapper {
 
         return Contrat.builder()
                 .id(UUID.randomUUID())
-                .clientId(dto.getClientId())
-                .vehiculeId(dto.getVehiculeId())
+                .client(dto.getClient())
+                .vehicule(dto.getVehicule())
                 .dateDebut(dto.getDateDebut())
                 .dateFin(dto.getDateFin())
                 .etat(EtatContrat.IN_PROGRESS)

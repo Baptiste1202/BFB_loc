@@ -73,7 +73,7 @@ public class ContratController {
             @RequestBody final UpdateContratDto input
     ) {
         log.info("Modification du contrat : {}", identifier);
-        this.validationService.validate(update);
+        // this.validationService.validate(input);
         return this.service.update(UUID.fromString(identifier), input);
     }
 

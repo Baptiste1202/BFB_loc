@@ -2,7 +2,6 @@ package com.bfb.rental.interfaces.dtos.vehicles;
 
 import com.bfb.rental.business.common.EtatVehicule;
 import com.bfb.rental.business.contrats.model.Contrat;
-import com.bfb.rental.business.contrats.dtos.UpdateContratDto;
 import com.bfb.rental.business.vehicles.model.Camion;
 import com.bfb.rental.business.vehicles.model.TransportVehicle;
 import com.bfb.rental.business.vehicles.model.Voiture;

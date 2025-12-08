@@ -18,8 +18,8 @@ public class ContratBddMapper extends AbstractBddMapper<Contrat, ContratEntity> 
 
         return Contrat.builder()
                 .id(UUID.fromString(entity.getIdentifier()))
-                .clientId(UUID.fromString(entity.getClientId()))
-                .vehiculeId(UUID.fromString(entity.getVehiculeId()))
+                .client(entity.getClient())
+                .vehicule(entity.getVehicule())
                 .dateDebut(entity.getDateDebut())
                 .dateFin(entity.getDateFin())
                 .etat(EtatContrat.valueOf(entity.getEtat()))
@@ -44,8 +44,8 @@ public class ContratBddMapper extends AbstractBddMapper<Contrat, ContratEntity> 
 
         return ContratEntity.builder()
                 .identifier(model.getId().toString())
-                .clientId(model.getClientId().toString())
-                .vehiculeId(model.getVehiculeId().toString())
+                .client(model.getClient())
+                .vehicule(model.getVehicule())
                 .dateDebut(model.getDateDebut())
                 .dateFin(model.getDateFin())
                 .etat(model.getEtat().name())
