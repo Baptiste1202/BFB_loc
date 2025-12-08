@@ -73,7 +73,6 @@ public class ContratController {
             @RequestBody final UpdateContratDto input
     ) {
         log.info("Modification du contrat : {}", identifier);
-        this.validationService.validate(ContratMapper.toEntity(input));
         return this.service.update(UUID.fromString(identifier), input);
     }
 
