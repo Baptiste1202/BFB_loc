@@ -5,11 +5,11 @@ import java.util.Collections;
 import java.util.Objects;
 import java.util.UUID;
 import com.bfb.rental.business.vehicles.VehicleService;
-import com.bfb.rental.business.vehicles.factories.VehicleFactory;
 import com.bfb.rental.interfaces.dtos.vehicles.CreateVehiculeDto;
 import com.bfb.rental.business.vehicles.model.TransportVehicle;
 import com.bfb.rental.interfaces.dtos.vehicles.UpdateVehiculeDto;
 import com.bfb.rental.interfaces.exceptions.ResourceNotFoundException;
+import com.bfb.rental.interfaces.mappers.VehiculeMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.*;
 public class VehiculeController {
 
     private final VehicleService service;
-    private final VehicleFactory factory;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -40,8 +39,7 @@ public class VehiculeController {
     @Operation(summary = "Crée un nouveau véhicule")
     public TransportVehicle create(@RequestBody final CreateVehiculeDto input) {
         log.info("Création d'un nouveau véhicule : {} {}", input.getMarque(), input.getModele());
-        TransportVehicle vehicle = this.factory.createVehicle(input.getType());
-        return this.service.create(vehicle);
+        return this.service.create(VehiculeMapper.toEntity(input));
     }
 
     @ResponseStatus(HttpStatus.OK)
