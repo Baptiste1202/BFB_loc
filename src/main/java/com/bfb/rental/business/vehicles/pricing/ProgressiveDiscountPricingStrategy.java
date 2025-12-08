@@ -12,13 +12,14 @@ import lombok.extern.slf4j.Slf4j;
 public class ProgressiveDiscountPricingStrategy implements PricingStrategy {
 
     @Override
-    public BigDecimal calculatePrice(Contrat contrat, TransportVehicle vehicule) {
+    public BigDecimal calculatePrice(Contrat contrat) {
         long nombreJours = ChronoUnit.DAYS.between(contrat.getDateDebut(), contrat.getDateFin());
 
         if (nombreJours == 0) {
             nombreJours = 1;
         }
 
+        TransportVehicle vehicule = contrat.getVehicule();
         BigDecimal prixJournalier = vehicule.getPrixLocationJournalier();
         BigDecimal prixTotal = prixJournalier.multiply(BigDecimal.valueOf(nombreJours));
 

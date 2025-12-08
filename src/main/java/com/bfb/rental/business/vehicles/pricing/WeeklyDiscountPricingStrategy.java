@@ -15,13 +15,14 @@ public class WeeklyDiscountPricingStrategy implements PricingStrategy {
     private static final BigDecimal DISCOUNT_RATE = new BigDecimal("0.10");
 
     @Override
-    public BigDecimal calculatePrice(Contrat contrat, TransportVehicle vehicule) {
+    public BigDecimal calculatePrice(Contrat contrat) {
         long nombreJours = ChronoUnit.DAYS.between(contrat.getDateDebut(), contrat.getDateFin());
 
         if (nombreJours == 0) {
             nombreJours = 1;
         }
 
+        TransportVehicle vehicule = contrat.getVehicule();
         BigDecimal prixJournalier = vehicule.getPrixLocationJournalier();
         BigDecimal prixTotal = prixJournalier.multiply(BigDecimal.valueOf(nombreJours));
 

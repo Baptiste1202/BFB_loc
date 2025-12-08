@@ -17,13 +17,14 @@ public class SeasonalPricingStrategy implements PricingStrategy {
     private static final BigDecimal NORMAL_MULTIPLIER = new BigDecimal("1.0");
 
     @Override
-    public BigDecimal calculatePrice(Contrat contrat, TransportVehicle vehicule) {
+    public BigDecimal calculatePrice(Contrat contrat) {
         long nombreJours = ChronoUnit.DAYS.between(contrat.getDateDebut(), contrat.getDateFin());
 
         if (nombreJours == 0) {
             nombreJours = 1;
         }
 
+        TransportVehicle vehicule = contrat.getVehicule();
         BigDecimal prixJournalier = vehicule.getPrixLocationJournalier();
         BigDecimal prixTotal = BigDecimal.ZERO;
 

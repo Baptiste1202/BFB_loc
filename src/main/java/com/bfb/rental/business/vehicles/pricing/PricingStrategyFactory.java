@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Factory pour créer les différentes stratégies de prix
  */
-@Slf4j
 @Component
 public class PricingStrategyFactory {
 
